@@ -13,7 +13,7 @@
       <p class="subtitle">Write freely, then get a quiet AI-assisted reflection on the mood of your entry.</p>
       <div class="header-meta">
         <span class="meta-pill" id="todayLabel">Today</span>
-        <span class="meta-pill subtle">Private</span>
+        <span class="meta-pill subtle">Local</span>
         <span class="meta-pill subtle">AI-assisted</span>
       </div>
     </div>
@@ -38,18 +38,68 @@
     </div>
   </header>
 
-  <nav class="app-nav" aria-label="Journal sections">
-    <button class="nav-pill active" type="button">Today</button>
-    <button class="nav-pill" type="button">Journal</button>
-    <button class="nav-pill" type="button">Insights</button>
-    <button class="nav-pill" type="button">Archive</button>
-  </nav>
+  <main class="workspace">
+    <aside class="panel sidebar-panel library-panel">
+      <div class="panel-head">
+        <div class="panel-title-wrap">
+          <p class="section-label">Library</p>
+          <h2>Pages and tags</h2>
+        </div>
+      </div>
 
-  <main class="layout">
+      <div class="sidebar-section">
+        <label class="search-box" for="noteSearch">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="noteSearch" type="text" placeholder="Search notes" aria-label="Search notes" />
+        </label>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-title">Pages</p>
+        <div class="page-list">
+          <button class="page-item active" type="button">
+            <span>Today</span>
+            <small>Current entry</small>
+          </button>
+          <button class="page-item" type="button">
+            <span>Journal</span>
+            <small>All notes</small>
+          </button>
+          <button class="page-item" type="button">
+            <span>Archive</span>
+            <small>Older entries</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-title">Tags</p>
+        <div class="tag-cloud">
+          <span class="tag-chip">School</span>
+          <span class="tag-chip">Friends</span>
+          <span class="tag-chip">Sleep</span>
+          <span class="tag-chip">Family</span>
+          <span class="tag-chip">Goals</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-title">Mood trend</p>
+        <div class="mini-chart">
+          <canvas id="trendChart" width="280" height="180"></canvas>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-title">Recent entries</p>
+        <div id="entryList" class="entry-list"></div>
+      </div>
+    </aside>
+
     <section class="panel composer-panel">
       <div class="panel-head">
         <div class="panel-title-wrap">
-          <p class="section-label">Journal entry</p>
+          <p class="section-label">Journal</p>
           <h2>How are you feeling today?</h2>
         </div>
         <span class="status-pill" id="storageStatus">Saved locally</span>
@@ -58,6 +108,12 @@
       <div class="prompt-card">
         <p class="prompt-label">Writing prompt</p>
         <p class="prompt-text">What was one small moment today that stayed with you?</p>
+      </div>
+
+      <div class="note-meta-row" aria-label="Entry metadata">
+        <span class="note-meta-chip">Daily note</span>
+        <span class="note-meta-chip">3 backlinks</span>
+        <span class="note-meta-chip">5 tags</span>
       </div>
 
       <label class="sr-only" for="journalEntry">Journal entry</label>
@@ -69,13 +125,32 @@
       </div>
 
       <p class="microcopy">Everything stays in your browser. The AI hints are gentle, local, and supportive.</p>
+
+      <section class="journal-section">
+        <div class="panel-head section-head">
+          <div class="panel-title-wrap">
+            <p class="section-label">Journal history</p>
+            <h2>Notes and reflections</h2>
+          </div>
+        </div>
+
+        <div class="dashboard-card chart-card">
+          <h3>Emotion breakdown</h3>
+          <canvas id="emotionChart" width="560" height="220"></canvas>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>Common themes</h3>
+          <div id="themeList" class="theme-list"></div>
+        </div>
+      </section>
     </section>
 
-    <section class="panel feedback-panel">
+    <aside class="panel feedback-panel">
       <div class="panel-head">
         <div class="panel-title-wrap">
-          <p class="section-label">AI reflection</p>
-          <h2>What this entry seems to say</h2>
+          <p class="section-label">Insights</p>
+          <h2>AI reflection</h2>
         </div>
         <span class="ai-chip">AI-assisted</span>
       </div>
@@ -98,6 +173,15 @@
         </article>
       </div>
 
+      <div class="sidebar-section linked-notes">
+        <p class="sidebar-title">Linked notes</p>
+        <div class="link-list">
+          <span class="link-pill">School pressure</span>
+          <span class="link-pill">Sleep check-in</span>
+          <span class="link-pill">Weekend reset</span>
+        </div>
+      </div>
+
       <div class="result-stack">
         <article class="result-card">
           <h3>AI summary</h3>
@@ -114,35 +198,7 @@
       </div>
 
       <div id="safetyBanner" class="safety-banner hidden"></div>
-    </section>
-
-    <section class="panel dashboard-panel">
-      <div class="panel-head">
-        <div class="panel-title-wrap">
-          <p class="section-label">Journal history</p>
-          <h2>Patterns from your recent entries</h2>
-        </div>
-      </div>
-
-      <div class="dashboard-grid">
-        <article class="dashboard-card chart-card">
-          <h3>Mood trend</h3>
-          <canvas id="trendChart" width="560" height="220"></canvas>
-        </article>
-        <article class="dashboard-card chart-card">
-          <h3>Emotion breakdown</h3>
-          <canvas id="emotionChart" width="560" height="220"></canvas>
-        </article>
-        <article class="dashboard-card">
-          <h3>Common themes</h3>
-          <div id="themeList" class="theme-list"></div>
-        </article>
-        <article class="dashboard-card">
-          <h3>Recent entries</h3>
-          <div id="entryList" class="entry-list"></div>
-        </article>
-      </div>
-    </section>
+    </aside>
   </main>
 
   <template id="entryTemplate">
