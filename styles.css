@@ -93,6 +93,11 @@ body {
   color: var(--accent-2);
 }
 
+.build-pill {
+  background: rgba(122, 92, 255, 0.16);
+  color: var(--accent);
+}
+
 .eyebrow,
 .section-label {
   margin: 0 0 8px;
