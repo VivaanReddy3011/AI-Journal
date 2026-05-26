@@ -609,6 +609,7 @@ function applyThemeState() {
   els.modeIcon.textContent = themeState.mode === "dark" ? "☾" : "☀";
   els.themeMenuBtn.setAttribute("aria-expanded", themeMenuOpen ? "true" : "false");
   els.currentThemeLabel.textContent = theme.label;
+  els.themeButtonSwatch.style.setProperty("--theme-button-color", palette.accent);
   els.themeButtonSwatch.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
   els.themeButtonSwatch.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
 }
