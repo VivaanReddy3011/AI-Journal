@@ -11,6 +11,11 @@
     <div class="brand-block">
       <h1>Student Journal</h1>
       <p class="subtitle">Write freely, then get a quiet AI-assisted reflection on the mood of your entry.</p>
+      <div class="header-meta">
+        <span class="meta-pill" id="todayLabel">Today</span>
+        <span class="meta-pill subtle">Private</span>
+        <span class="meta-pill subtle">AI-assisted</span>
+      </div>
     </div>
     <div class="topbar-actions">
       <button id="modeToggleBtn" class="mode-toggle secondary-btn" type="button" aria-pressed="false" aria-label="Toggle appearance">
@@ -33,6 +38,13 @@
     </div>
   </header>
 
+  <nav class="app-nav" aria-label="Journal sections">
+    <button class="nav-pill active" type="button">Today</button>
+    <button class="nav-pill" type="button">Journal</button>
+    <button class="nav-pill" type="button">Insights</button>
+    <button class="nav-pill" type="button">Archive</button>
+  </nav>
+
   <main class="layout">
     <section class="panel composer-panel">
       <div class="panel-head">
@@ -41,6 +53,11 @@
           <h2>How are you feeling today?</h2>
         </div>
         <span class="status-pill" id="storageStatus">Saved locally</span>
+      </div>
+
+      <div class="prompt-card">
+        <p class="prompt-label">Writing prompt</p>
+        <p class="prompt-text">What was one small moment today that stayed with you?</p>
       </div>
 
       <label class="sr-only" for="journalEntry">Journal entry</label>

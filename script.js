@@ -548,6 +548,7 @@ const els = {
   emotionChart: document.getElementById("emotionChart"),
   storageStatus: document.getElementById("storageStatus"),
   entryTemplate: document.getElementById("entryTemplate"),
+  todayLabel: document.getElementById("todayLabel"),
   modeToggleBtn: document.getElementById("modeToggleBtn"),
   modeIcon: document.getElementById("modeIcon"),
   themeMenuBtn: document.getElementById("themeMenuBtn"),
@@ -610,6 +611,15 @@ function applyThemeState() {
   els.currentThemeLabel.textContent = theme.label;
   els.themeButtonSwatch.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
   els.themeButtonSwatch.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
+}
+
+function updateTodayLabel() {
+  if (!els.todayLabel) return;
+  els.todayLabel.textContent = new Intl.DateTimeFormat(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(new Date());
 }
 
 function toKebabCase(value) {
@@ -1189,5 +1199,6 @@ window.addEventListener("resize", () => renderDashboard());
 window.addEventListener("DOMContentLoaded", () => renderApp());
 
 applyThemeState();
+updateTodayLabel();
 renderThemeMenu();
 renderApp();
