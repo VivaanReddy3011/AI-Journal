@@ -702,6 +702,7 @@ function renderThemeMenu() {
         <span class="theme-option-note">${theme.note}</span>
       </span>
     `;
+    button.style.setProperty("--theme-option-color", theme.swatches.light);
     button.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
     button.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
     button.addEventListener("click", () => {
