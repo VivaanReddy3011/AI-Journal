@@ -1,13 +1,31 @@
 :root {
-  --bg: #f4efe7;
-  --bg-soft: rgba(255, 255, 255, 0.85);
+  --bg-top: #fbf8f3;
+  --bg-bottom: #efe7db;
+  --bg-accent-1: rgba(122, 92, 255, 0.08);
+  --bg-accent-2: rgba(15, 139, 107, 0.08);
   --panel: rgba(255, 255, 255, 0.9);
   --panel-border: rgba(70, 54, 34, 0.08);
+  --surface-strong: rgba(255, 253, 248, 1);
+  --surface-soft: rgba(255, 255, 255, 0.55);
   --text: #24190f;
   --muted: #6c5a4b;
   --accent: #7a5cff;
   --accent-2: #0f8b6b;
+  --accent-soft: rgba(122, 92, 255, 0.1);
   --danger: #b0474f;
+  --danger-soft: rgba(176, 71, 79, 0.08);
+  --button-secondary-bg: rgba(255, 255, 255, 0.78);
+  --button-secondary-text: #24190f;
+  --button-secondary-border: rgba(70, 54, 34, 0.08);
+  --button-ghost-text: #6c5a4b;
+  --button-ghost-border: rgba(70, 54, 34, 0.08);
+  --menu-bg: rgba(255, 255, 255, 0.96);
+  --menu-border: rgba(70, 54, 34, 0.08);
+  --menu-item-bg: rgba(255, 255, 255, 0.85);
+  --menu-item-hover: rgba(122, 92, 255, 0.06);
+  --menu-item-active: rgba(122, 92, 255, 0.12);
+  --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(251, 247, 240, 0.96));
+  --card-border: rgba(70, 54, 34, 0.08);
   --shadow: 0 16px 40px rgba(74, 48, 23, 0.12);
   --radius: 24px;
   --page-width: min(1180px, calc(100vw - 32px));
@@ -26,9 +44,9 @@ body {
 body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(122, 92, 255, 0.08), transparent 22%),
-    radial-gradient(circle at right center, rgba(15, 139, 107, 0.08), transparent 20%),
-    linear-gradient(180deg, #fbf8f3 0%, #f4efe7 40%, #efe7db 100%);
+    radial-gradient(circle at top left, var(--bg-accent-1), transparent 22%),
+    radial-gradient(circle at right center, var(--bg-accent-2), transparent 20%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
   color: var(--text);
   padding: 28px 0 40px;
   overflow-x: hidden;
@@ -91,6 +109,11 @@ h1 {
   flex-wrap: wrap;
 }
 
+.topbar-actions {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
 .layout {
   display: grid;
   gap: 18px;
@@ -144,7 +167,7 @@ h1 {
   justify-content: center;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(122, 92, 255, 0.1);
+  background: var(--accent-soft);
   color: var(--accent);
   font-size: 0.82rem;
   font-weight: 700;
@@ -158,7 +181,7 @@ textarea {
   border: 1px solid rgba(88, 68, 48, 0.12);
   border-radius: 18px;
   padding: 18px;
-  background: #fffdf8;
+  background: var(--surface-strong);
   color: var(--text);
   font: inherit;
   line-height: 1.6;
@@ -195,21 +218,149 @@ button:active {
 }
 
 .secondary-btn {
-  background: rgba(255, 255, 255, 0.78);
-  color: var(--text);
-  border: 1px solid rgba(70, 54, 34, 0.08);
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-border);
 }
 
 .ghost-btn {
   background: transparent;
-  color: var(--muted);
-  border: 1px solid rgba(70, 54, 34, 0.08);
+  color: var(--button-ghost-text);
+  border: 1px solid var(--button-ghost-border);
 }
 
 .microcopy {
   margin: 14px 0 0;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.mode-toggle,
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mode-icon,
+.theme-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 auto;
+}
+
+.theme-picker {
+  position: relative;
+}
+
+.theme-btn {
+  min-width: 200px;
+}
+
+.theme-copy {
+  display: grid;
+  text-align: left;
+}
+
+.theme-btn-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.theme-btn-value {
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(360px, calc(100vw - 32px));
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--menu-border);
+  background: var(--menu-bg);
+  box-shadow: 0 24px 50px rgba(74, 48, 23, 0.18);
+  z-index: 10;
+  display: grid;
+  gap: 8px;
+}
+
+.theme-menu.hidden {
+  display: none;
+}
+
+.theme-option {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: var(--menu-item-bg);
+  color: var(--text);
+  text-align: left;
+}
+
+.theme-option:hover {
+  transform: translateY(-1px);
+  border-color: var(--menu-item-hover);
+}
+
+.theme-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-option.active {
+  border-color: var(--menu-item-active);
+  box-shadow: 0 0 0 3px var(--menu-item-active);
+}
+
+.theme-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--menu-border);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.theme-swatch-light,
+.theme-swatch-dark {
+  display: block;
+}
+
+.theme-swatch-light {
+  background: var(--theme-light-surface, #fff);
+}
+
+.theme-swatch-dark {
+  background: var(--theme-dark-surface, #111);
+}
+
+.theme-option-name {
+  font-weight: 700;
+}
+
+.theme-option-note {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.theme-option-mode {
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
 }
 
 .feedback-grid,
@@ -227,8 +378,8 @@ button:active {
 .result-card,
 .dashboard-card,
 .entry-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(251, 247, 240, 0.96));
-  border: 1px solid rgba(70, 54, 34, 0.08);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 18px;
   padding: 16px;
 }
@@ -280,7 +431,7 @@ button:active {
   padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid rgba(176, 71, 79, 0.24);
-  background: rgba(176, 71, 79, 0.08);
+  background: var(--danger-soft);
   color: #8d333a;
   line-height: 1.6;
 }
@@ -297,7 +448,7 @@ button:active {
   width: 100%;
   height: auto;
   display: block;
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--surface-soft);
   border-radius: 14px;
 }
 
@@ -341,7 +492,7 @@ button:active {
 .entry-mood {
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(122, 92, 255, 0.1);
+  background: var(--accent-soft);
   color: var(--accent);
   font-size: 0.82rem;
   text-transform: capitalize;

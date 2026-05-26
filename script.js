@@ -1,4 +1,502 @@
 const STORAGE_KEY = "student-journal-demo-entries";
+const THEME_STORAGE_KEY = "student-journal-theme";
+
+const THEME_PRESETS = {
+  paper: {
+    label: "Paper",
+    note: "Classic notebook",
+    swatches: {
+      light: "#fffdf8",
+      dark: "#111827",
+    },
+    light: {
+      bgTop: "#fbf8f3",
+      bgBottom: "#efe7db",
+      bgAccent1: "rgba(122, 92, 255, 0.08)",
+      bgAccent2: "rgba(15, 139, 107, 0.08)",
+      panel: "rgba(255, 255, 255, 0.9)",
+      panelBorder: "rgba(70, 54, 34, 0.08)",
+      surfaceStrong: "#fffdf8",
+      surfaceSoft: "rgba(255, 255, 255, 0.55)",
+      text: "#24190f",
+      muted: "#6c5a4b",
+      accent: "#7a5cff",
+      accent2: "#0f8b6b",
+      accentSoft: "rgba(122, 92, 255, 0.1)",
+      danger: "#b0474f",
+      dangerSoft: "rgba(176, 71, 79, 0.08)",
+      shadow: "0 16px 40px rgba(74, 48, 23, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.78)",
+      buttonSecondaryText: "#24190f",
+      buttonSecondaryBorder: "rgba(70, 54, 34, 0.08)",
+      buttonGhostText: "#6c5a4b",
+      buttonGhostBorder: "rgba(70, 54, 34, 0.08)",
+      menuBg: "rgba(255, 255, 255, 0.96)",
+      menuBorder: "rgba(70, 54, 34, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.85)",
+      menuItemHover: "rgba(122, 92, 255, 0.06)",
+      menuItemActive: "rgba(122, 92, 255, 0.12)",
+    },
+    dark: {
+      bgTop: "#111827",
+      bgBottom: "#0b1220",
+      bgAccent1: "rgba(122, 92, 255, 0.12)",
+      bgAccent2: "rgba(15, 139, 107, 0.12)",
+      panel: "rgba(17, 24, 39, 0.9)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#111827",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#f3f4f6",
+      muted: "#9ca3af",
+      accent: "#9f8cff",
+      accent2: "#31c48d",
+      accentSoft: "rgba(159, 140, 255, 0.16)",
+      danger: "#f87171",
+      dangerSoft: "rgba(248, 113, 113, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.28)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#f3f4f6",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#9ca3af",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(17, 24, 39, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(159, 140, 255, 0.12)",
+      menuItemActive: "rgba(159, 140, 255, 0.2)",
+    },
+  },
+  meadow: {
+    label: "Meadow",
+    note: "Fresh and calm",
+    swatches: { light: "#f7fbf4", dark: "#0d1b17" },
+    light: {
+      bgTop: "#f8fbf4",
+      bgBottom: "#e6f1e4",
+      bgAccent1: "rgba(38, 162, 109, 0.08)",
+      bgAccent2: "rgba(90, 121, 71, 0.08)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(38, 162, 109, 0.12)",
+      surfaceStrong: "#fdfefb",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#183025",
+      muted: "#587163",
+      accent: "#2d8a64",
+      accent2: "#5a7947",
+      accentSoft: "rgba(45, 138, 100, 0.12)",
+      danger: "#a24b52",
+      dangerSoft: "rgba(162, 75, 82, 0.08)",
+      shadow: "0 16px 40px rgba(50, 90, 62, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.82)",
+      buttonSecondaryText: "#183025",
+      buttonSecondaryBorder: "rgba(38, 162, 109, 0.12)",
+      buttonGhostText: "#587163",
+      buttonGhostBorder: "rgba(38, 162, 109, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(38, 162, 109, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.88)",
+      menuItemHover: "rgba(38, 162, 109, 0.08)",
+      menuItemActive: "rgba(38, 162, 109, 0.16)",
+    },
+    dark: {
+      bgTop: "#0d1b17",
+      bgBottom: "#07120f",
+      bgAccent1: "rgba(38, 162, 109, 0.16)",
+      bgAccent2: "rgba(90, 121, 71, 0.12)",
+      panel: "rgba(11, 24, 19, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#10221a",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#e8f5ee",
+      muted: "#9fbdaf",
+      accent: "#69d3a0",
+      accent2: "#9fca72",
+      accentSoft: "rgba(105, 211, 160, 0.16)",
+      danger: "#ff8d95",
+      dangerSoft: "rgba(255, 141, 149, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.3)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#e8f5ee",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#9fbdaf",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(11, 24, 19, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(105, 211, 160, 0.12)",
+      menuItemActive: "rgba(105, 211, 160, 0.2)",
+    },
+  },
+  ocean: {
+    label: "Ocean",
+    note: "Cool and focused",
+    swatches: { light: "#f4fbff", dark: "#07111d" },
+    light: {
+      bgTop: "#f5fbff",
+      bgBottom: "#e4f2fb",
+      bgAccent1: "rgba(43, 140, 214, 0.08)",
+      bgAccent2: "rgba(52, 191, 218, 0.08)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(43, 140, 214, 0.12)",
+      surfaceStrong: "#fcfeff",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#123044",
+      muted: "#5b7486",
+      accent: "#2b8cd6",
+      accent2: "#2fadc1",
+      accentSoft: "rgba(43, 140, 214, 0.12)",
+      danger: "#ad5465",
+      dangerSoft: "rgba(173, 84, 101, 0.08)",
+      shadow: "0 16px 40px rgba(49, 93, 125, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.84)",
+      buttonSecondaryText: "#123044",
+      buttonSecondaryBorder: "rgba(43, 140, 214, 0.12)",
+      buttonGhostText: "#5b7486",
+      buttonGhostBorder: "rgba(43, 140, 214, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(43, 140, 214, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.88)",
+      menuItemHover: "rgba(43, 140, 214, 0.08)",
+      menuItemActive: "rgba(43, 140, 214, 0.16)",
+    },
+    dark: {
+      bgTop: "#07111d",
+      bgBottom: "#091622",
+      bgAccent1: "rgba(43, 140, 214, 0.16)",
+      bgAccent2: "rgba(52, 191, 218, 0.12)",
+      panel: "rgba(10, 20, 32, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#0c1724",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#e5f4ff",
+      muted: "#9ab0bf",
+      accent: "#6bb8ff",
+      accent2: "#68dbe3",
+      accentSoft: "rgba(107, 184, 255, 0.16)",
+      danger: "#ff8da3",
+      dangerSoft: "rgba(255, 141, 163, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.3)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#e5f4ff",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#9ab0bf",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(10, 20, 32, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(107, 184, 255, 0.12)",
+      menuItemActive: "rgba(107, 184, 255, 0.2)",
+    },
+  },
+  sunset: {
+    label: "Sunset",
+    note: "Warm and creative",
+    swatches: { light: "#fff8f2", dark: "#1e1010" },
+    light: {
+      bgTop: "#fff8f2",
+      bgBottom: "#f8e4d3",
+      bgAccent1: "rgba(229, 117, 82, 0.1)",
+      bgAccent2: "rgba(232, 169, 84, 0.1)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(229, 117, 82, 0.14)",
+      surfaceStrong: "#fffdfb",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#341d16",
+      muted: "#7a5f55",
+      accent: "#e57552",
+      accent2: "#d98a2d",
+      accentSoft: "rgba(229, 117, 82, 0.12)",
+      danger: "#b04b5f",
+      dangerSoft: "rgba(176, 75, 95, 0.08)",
+      shadow: "0 16px 40px rgba(109, 71, 45, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.84)",
+      buttonSecondaryText: "#341d16",
+      buttonSecondaryBorder: "rgba(229, 117, 82, 0.14)",
+      buttonGhostText: "#7a5f55",
+      buttonGhostBorder: "rgba(229, 117, 82, 0.14)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(229, 117, 82, 0.14)",
+      menuItemBg: "rgba(255, 255, 255, 0.9)",
+      menuItemHover: "rgba(229, 117, 82, 0.08)",
+      menuItemActive: "rgba(229, 117, 82, 0.16)",
+    },
+    dark: {
+      bgTop: "#1e1010",
+      bgBottom: "#0f0a0a",
+      bgAccent1: "rgba(229, 117, 82, 0.16)",
+      bgAccent2: "rgba(232, 169, 84, 0.12)",
+      panel: "rgba(28, 16, 16, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#261413",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#fff2ea",
+      muted: "#d1b2a5",
+      accent: "#f0a07b",
+      accent2: "#f0c16e",
+      accentSoft: "rgba(240, 160, 123, 0.16)",
+      danger: "#ff909f",
+      dangerSoft: "rgba(255, 144, 159, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.34)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#fff2ea",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#d1b2a5",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(28, 16, 16, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(240, 160, 123, 0.12)",
+      menuItemActive: "rgba(240, 160, 123, 0.2)",
+    },
+  },
+  rose: {
+    label: "Rose",
+    note: "Soft and expressive",
+    swatches: { light: "#fff6f8", dark: "#1f1015" },
+    light: {
+      bgTop: "#fff7fa",
+      bgBottom: "#f5e3ea",
+      bgAccent1: "rgba(196, 70, 124, 0.08)",
+      bgAccent2: "rgba(235, 141, 167, 0.08)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(196, 70, 124, 0.12)",
+      surfaceStrong: "#fffdfd",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#34191f",
+      muted: "#785861",
+      accent: "#c4467c",
+      accent2: "#e08a9d",
+      accentSoft: "rgba(196, 70, 124, 0.12)",
+      danger: "#b34b58",
+      dangerSoft: "rgba(179, 75, 88, 0.08)",
+      shadow: "0 16px 40px rgba(117, 67, 89, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.84)",
+      buttonSecondaryText: "#34191f",
+      buttonSecondaryBorder: "rgba(196, 70, 124, 0.12)",
+      buttonGhostText: "#785861",
+      buttonGhostBorder: "rgba(196, 70, 124, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(196, 70, 124, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.88)",
+      menuItemHover: "rgba(196, 70, 124, 0.08)",
+      menuItemActive: "rgba(196, 70, 124, 0.16)",
+    },
+    dark: {
+      bgTop: "#1f1015",
+      bgBottom: "#0f090c",
+      bgAccent1: "rgba(196, 70, 124, 0.16)",
+      bgAccent2: "rgba(235, 141, 167, 0.12)",
+      panel: "rgba(31, 16, 21, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#29131b",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#fff1f6",
+      muted: "#d0a8b8",
+      accent: "#f18cb1",
+      accent2: "#efadc0",
+      accentSoft: "rgba(241, 140, 177, 0.16)",
+      danger: "#ff91a0",
+      dangerSoft: "rgba(255, 145, 160, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.34)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#fff1f6",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#d0a8b8",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(31, 16, 21, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(241, 140, 177, 0.12)",
+      menuItemActive: "rgba(241, 140, 177, 0.2)",
+    },
+  },
+  lavender: {
+    label: "Lavender",
+    note: "Soft and focused",
+    swatches: { light: "#fbf9ff", dark: "#15111f" },
+    light: {
+      bgTop: "#fbf9ff",
+      bgBottom: "#ece6fb",
+      bgAccent1: "rgba(128, 90, 213, 0.08)",
+      bgAccent2: "rgba(178, 143, 245, 0.08)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(128, 90, 213, 0.12)",
+      surfaceStrong: "#fffefe",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#231a35",
+      muted: "#736985",
+      accent: "#805ad5",
+      accent2: "#a17bdc",
+      accentSoft: "rgba(128, 90, 213, 0.12)",
+      danger: "#b35776",
+      dangerSoft: "rgba(179, 87, 118, 0.08)",
+      shadow: "0 16px 40px rgba(91, 69, 138, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.84)",
+      buttonSecondaryText: "#231a35",
+      buttonSecondaryBorder: "rgba(128, 90, 213, 0.12)",
+      buttonGhostText: "#736985",
+      buttonGhostBorder: "rgba(128, 90, 213, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(128, 90, 213, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.88)",
+      menuItemHover: "rgba(128, 90, 213, 0.08)",
+      menuItemActive: "rgba(128, 90, 213, 0.16)",
+    },
+    dark: {
+      bgTop: "#15111f",
+      bgBottom: "#0c0a14",
+      bgAccent1: "rgba(128, 90, 213, 0.16)",
+      bgAccent2: "rgba(178, 143, 245, 0.12)",
+      panel: "rgba(21, 17, 31, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#1e172c",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#f3ecff",
+      muted: "#b8aacd",
+      accent: "#b28ff5",
+      accent2: "#d2b6ff",
+      accentSoft: "rgba(178, 143, 245, 0.16)",
+      danger: "#ff8eb0",
+      dangerSoft: "rgba(255, 142, 176, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.34)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#f3ecff",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#b8aacd",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(21, 17, 31, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(178, 143, 245, 0.12)",
+      menuItemActive: "rgba(178, 143, 245, 0.2)",
+    },
+  },
+  slate: {
+    label: "Slate",
+    note: "Minimal and crisp",
+    swatches: { light: "#f8fafc", dark: "#0f172a" },
+    light: {
+      bgTop: "#fbfcfe",
+      bgBottom: "#e7ebf2",
+      bgAccent1: "rgba(71, 85, 105, 0.08)",
+      bgAccent2: "rgba(37, 99, 235, 0.06)",
+      panel: "rgba(255, 255, 255, 0.95)",
+      panelBorder: "rgba(71, 85, 105, 0.12)",
+      surfaceStrong: "#ffffff",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#111827",
+      muted: "#5b6472",
+      accent: "#475569",
+      accent2: "#2563eb",
+      accentSoft: "rgba(71, 85, 105, 0.1)",
+      danger: "#b4495d",
+      dangerSoft: "rgba(180, 73, 93, 0.08)",
+      shadow: "0 16px 40px rgba(51, 65, 85, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.86)",
+      buttonSecondaryText: "#111827",
+      buttonSecondaryBorder: "rgba(71, 85, 105, 0.12)",
+      buttonGhostText: "#5b6472",
+      buttonGhostBorder: "rgba(71, 85, 105, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(71, 85, 105, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.9)",
+      menuItemHover: "rgba(71, 85, 105, 0.08)",
+      menuItemActive: "rgba(71, 85, 105, 0.16)",
+    },
+    dark: {
+      bgTop: "#0f172a",
+      bgBottom: "#090d17",
+      bgAccent1: "rgba(71, 85, 105, 0.16)",
+      bgAccent2: "rgba(37, 99, 235, 0.12)",
+      panel: "rgba(15, 23, 42, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#111827",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#f8fafc",
+      muted: "#cbd5e1",
+      accent: "#94a3b8",
+      accent2: "#60a5fa",
+      accentSoft: "rgba(148, 163, 184, 0.16)",
+      danger: "#ff8ea4",
+      dangerSoft: "rgba(255, 142, 164, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.34)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#f8fafc",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#cbd5e1",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(15, 23, 42, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(148, 163, 184, 0.12)",
+      menuItemActive: "rgba(148, 163, 184, 0.2)",
+    },
+  },
+  cocoa: {
+    label: "Cocoa",
+    note: "Warm and grounded",
+    swatches: { light: "#fdf8f3", dark: "#1b1511" },
+    light: {
+      bgTop: "#fdf8f3",
+      bgBottom: "#efe1d5",
+      bgAccent1: "rgba(168, 110, 73, 0.1)",
+      bgAccent2: "rgba(138, 84, 47, 0.08)",
+      panel: "rgba(255, 255, 255, 0.92)",
+      panelBorder: "rgba(168, 110, 73, 0.12)",
+      surfaceStrong: "#fffdfb",
+      surfaceSoft: "rgba(255, 255, 255, 0.56)",
+      text: "#2b1c14",
+      muted: "#7b665a",
+      accent: "#a86e49",
+      accent2: "#8a542f",
+      accentSoft: "rgba(168, 110, 73, 0.12)",
+      danger: "#b3534c",
+      dangerSoft: "rgba(179, 83, 76, 0.08)",
+      shadow: "0 16px 40px rgba(112, 81, 58, 0.12)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.84)",
+      buttonSecondaryText: "#2b1c14",
+      buttonSecondaryBorder: "rgba(168, 110, 73, 0.12)",
+      buttonGhostText: "#7b665a",
+      buttonGhostBorder: "rgba(168, 110, 73, 0.12)",
+      menuBg: "rgba(255, 255, 255, 0.98)",
+      menuBorder: "rgba(168, 110, 73, 0.12)",
+      menuItemBg: "rgba(255, 255, 255, 0.9)",
+      menuItemHover: "rgba(168, 110, 73, 0.08)",
+      menuItemActive: "rgba(168, 110, 73, 0.16)",
+    },
+    dark: {
+      bgTop: "#1b1511",
+      bgBottom: "#0e0a09",
+      bgAccent1: "rgba(168, 110, 73, 0.16)",
+      bgAccent2: "rgba(138, 84, 47, 0.12)",
+      panel: "rgba(27, 21, 17, 0.92)",
+      panelBorder: "rgba(255, 255, 255, 0.08)",
+      surfaceStrong: "#251b16",
+      surfaceSoft: "rgba(255, 255, 255, 0.04)",
+      text: "#fff2e7",
+      muted: "#d3b9a9",
+      accent: "#d2a27f",
+      accent2: "#c78a60",
+      accentSoft: "rgba(210, 162, 127, 0.16)",
+      danger: "#ff928e",
+      dangerSoft: "rgba(255, 146, 142, 0.08)",
+      shadow: "0 18px 40px rgba(0, 0, 0, 0.34)",
+      buttonSecondaryBg: "rgba(255, 255, 255, 0.06)",
+      buttonSecondaryText: "#fff2e7",
+      buttonSecondaryBorder: "rgba(255, 255, 255, 0.1)",
+      buttonGhostText: "#d3b9a9",
+      buttonGhostBorder: "rgba(255, 255, 255, 0.08)",
+      menuBg: "rgba(27, 21, 17, 0.96)",
+      menuBorder: "rgba(255, 255, 255, 0.08)",
+      menuItemBg: "rgba(255, 255, 255, 0.04)",
+      menuItemHover: "rgba(210, 162, 127, 0.12)",
+      menuItemActive: "rgba(210, 162, 127, 0.2)",
+    },
+  },
+};
+
+const THEME_ORDER = ["paper", "meadow", "ocean", "sunset", "rose", "lavender", "slate", "cocoa"];
+const DEFAULT_THEME = { id: "paper", mode: "light" };
 
 const EMOTION_WORDS = {
   positive: ["happy", "good", "great", "proud", "calm", "grateful", "better", "excited", "relieved", "peaceful", "hopeful", "joy"],
@@ -50,9 +548,70 @@ const els = {
   emotionChart: document.getElementById("emotionChart"),
   storageStatus: document.getElementById("storageStatus"),
   entryTemplate: document.getElementById("entryTemplate"),
+  modeToggleBtn: document.getElementById("modeToggleBtn"),
+  modeLabel: document.getElementById("modeLabel"),
+  themeMenuBtn: document.getElementById("themeMenuBtn"),
+  themeMenu: document.getElementById("themeMenu"),
+  currentThemeLabel: document.getElementById("currentThemeLabel"),
 };
 
 let entries = loadEntries();
+let themeState = loadThemeState();
+let themeMenuOpen = false;
+
+function loadThemeState() {
+  try {
+    const raw = localStorage.getItem(THEME_STORAGE_KEY);
+    if (!raw) return { ...DEFAULT_THEME };
+    const parsed = JSON.parse(raw);
+    const themeId = THEME_PRESETS[parsed.id] ? parsed.id : DEFAULT_THEME.id;
+    const mode = parsed.mode === "dark" ? "dark" : "light";
+    return { id: themeId, mode };
+  } catch {
+    return { ...DEFAULT_THEME };
+  }
+}
+
+function saveThemeState() {
+  localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(themeState));
+}
+
+function getThemeDefinition(themeId = themeState.id) {
+  return THEME_PRESETS[themeId] || THEME_PRESETS[DEFAULT_THEME.id];
+}
+
+function applyThemeState() {
+  const theme = getThemeDefinition(themeState.id);
+  const palette = theme[themeState.mode];
+  const root = document.documentElement;
+
+  Object.entries(palette).forEach(([key, value]) => {
+    root.style.setProperty(`--${toKebabCase(key)}`, value);
+  });
+
+  root.style.setProperty(
+    "--card-bg",
+    themeState.mode === "dark"
+      ? "linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.8))"
+      : "linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(251, 247, 240, 0.96))"
+  );
+  root.style.setProperty(
+    "--card-border",
+    themeState.mode === "dark" ? "rgba(255, 255, 255, 0.08)" : "rgba(70, 54, 34, 0.08)"
+  );
+
+  root.dataset.theme = themeState.id;
+  root.dataset.mode = themeState.mode;
+
+  els.modeToggleBtn.setAttribute("aria-pressed", themeState.mode === "dark" ? "true" : "false");
+  els.modeLabel.textContent = themeState.mode === "dark" ? "Dark mode" : "Light mode";
+  els.themeMenuBtn.setAttribute("aria-expanded", themeMenuOpen ? "true" : "false");
+  els.currentThemeLabel.textContent = `${theme.label} • ${themeState.mode === "dark" ? "Dark" : "Light"}`;
+}
+
+function toKebabCase(value) {
+  return value.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
+}
 
 function loadEntries() {
   try {
@@ -65,6 +624,70 @@ function loadEntries() {
 
 function saveEntries() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function renderThemeMenu() {
+  els.themeMenu.innerHTML = "";
+
+  THEME_ORDER.forEach((themeId) => {
+    const theme = THEME_PRESETS[themeId];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `theme-option${themeState.id === themeId ? " active" : ""}`;
+    button.setAttribute("role", "menuitemradio");
+    button.setAttribute("aria-checked", themeState.id === themeId ? "true" : "false");
+    button.innerHTML = `
+      <span class="theme-swatch" aria-hidden="true">
+        <span class="theme-swatch-light"></span>
+        <span class="theme-swatch-dark"></span>
+      </span>
+      <span>
+        <span class="theme-option-name">${theme.label}</span>
+        <span class="theme-option-note">${theme.note}</span>
+      </span>
+      <span class="theme-option-mode">${themeState.mode}</span>
+    `;
+    button.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
+    button.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
+    button.addEventListener("click", () => {
+      themeState = { ...themeState, id: themeId };
+      saveThemeState();
+      applyThemeState();
+      renderThemeMenu();
+      renderDashboard();
+      closeThemeMenu();
+    });
+    els.themeMenu.appendChild(button);
+  });
+}
+
+function openThemeMenu() {
+  themeMenuOpen = true;
+  els.themeMenu.classList.remove("hidden");
+  els.themeMenuBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeThemeMenu() {
+  themeMenuOpen = false;
+  els.themeMenu.classList.add("hidden");
+  els.themeMenuBtn.setAttribute("aria-expanded", "false");
+}
+
+function toggleThemeMenu() {
+  if (themeMenuOpen) closeThemeMenu();
+  else openThemeMenu();
+}
+
+function toggleMode() {
+  themeState = { ...themeState, mode: themeState.mode === "dark" ? "light" : "dark" };
+  saveThemeState();
+  applyThemeState();
+  renderThemeMenu();
+  renderDashboard();
+}
+
+function getThemeColor(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
 
 function tokenize(text) {
@@ -387,11 +1010,11 @@ function drawChart(canvas, series, labels, colors) {
   ctx.scale(ratio, ratio);
 
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = "rgba(255,255,255,0.02)";
+  ctx.fillStyle = getThemeColor("--surface-soft") || "rgba(255,255,255,0.02)";
   roundRect(ctx, 0, 0, width, height, 16, true, false);
 
   if (!series.length) {
-    ctx.fillStyle = "rgba(233, 240, 255, 0.65)";
+    ctx.fillStyle = getThemeColor("--muted") || "rgba(233, 240, 255, 0.65)";
     ctx.font = "14px Inter, sans-serif";
     ctx.fillText("No data yet", 18, 36);
     return;
@@ -404,7 +1027,7 @@ function drawChart(canvas, series, labels, colors) {
   const min = Math.min(...series, -1);
   const range = max - min || 1;
 
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
+  ctx.strokeStyle = getThemeColor("--panel-border") || "rgba(255,255,255,0.08)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = pad + (plotH / 4) * i;
@@ -434,7 +1057,7 @@ function drawChart(canvas, series, labels, colors) {
     ctx.fill();
   });
 
-  ctx.fillStyle = "rgba(233, 240, 255, 0.7)";
+  ctx.fillStyle = getThemeColor("--muted") || "rgba(233, 240, 255, 0.7)";
   ctx.font = "12px Inter, sans-serif";
   labels.forEach((label, index) => {
     const x = pad + (plotW / Math.max(labels.length - 1, 1)) * index;
@@ -472,14 +1095,17 @@ function renderDashboard() {
     emotionTotals.hope || 0,
   ];
 
+  const lineColor = getThemeColor("--accent") || "#74d3ff";
+  const pointColor = getThemeColor("--accent-2") || "#9dffca";
+
   drawChart(els.trendChart, scores, labels, {
-    line: "#74d3ff",
-    point: "#9dffca",
+    line: lineColor,
+    point: pointColor,
   });
 
   drawChart(els.emotionChart, emotionSeries, ["Pos", "Stress", "Sad", "Anger", "Hope"], {
-    line: "#9dffca",
-    point: "#74d3ff",
+    line: pointColor,
+    point: lineColor,
   });
 }
 
@@ -545,7 +1171,21 @@ els.clearAllBtn.addEventListener("click", () => {
   renderApp();
 });
 
+els.modeToggleBtn.addEventListener("click", toggleMode);
+els.themeMenuBtn.addEventListener("click", toggleThemeMenu);
+document.addEventListener("click", (event) => {
+  if (!themeMenuOpen) return;
+  const target = event.target;
+  if (target instanceof Element && target.closest(".theme-picker")) return;
+  closeThemeMenu();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeThemeMenu();
+});
+
 window.addEventListener("resize", () => renderDashboard());
 window.addEventListener("DOMContentLoaded", () => renderApp());
 
+applyThemeState();
+renderThemeMenu();
 renderApp();
