@@ -6,7 +6,7 @@ It reads each entry, estimates the emotional tone, and returns gentle feedback, 
 
 ## Demo Release
 
-- Version: `v1.1.0`
+- Version: `v1.1.1`
 - Run mode: local browser app
 - Storage: `localStorage`
 - APIs: none required
@@ -79,6 +79,10 @@ npm run demo
 - `RELEASE_NOTES.md` - release summary
 
 ## Release Notes
+
+### v1.1.1
+
+- Bumped the visible build marker and cache-busted the app assets
 
 ### v1.1.0
 
