@@ -42,8 +42,8 @@
     <aside class="panel sidebar-panel library-panel">
       <div class="panel-head">
         <div class="panel-title-wrap">
-          <p class="section-label">Library</p>
-          <h2>Pages and tags</h2>
+          <p class="section-label">Entries</p>
+          <h2>All notes</h2>
         </div>
       </div>
 
@@ -100,7 +100,7 @@
       <div class="panel-head">
         <div class="panel-title-wrap">
           <p class="section-label">Journal</p>
-          <h2>How are you feeling today?</h2>
+          <h2>Today's entry</h2>
         </div>
         <span class="status-pill" id="storageStatus">Saved locally</span>
       </div>
@@ -112,8 +112,8 @@
 
       <div class="note-meta-row" aria-label="Entry metadata">
         <span class="note-meta-chip">Daily note</span>
-        <span class="note-meta-chip">3 backlinks</span>
-        <span class="note-meta-chip">5 tags</span>
+        <span class="note-meta-chip" id="wordCountChip">0 words</span>
+        <span class="note-meta-chip">Auto-saved locally</span>
       </div>
 
       <label class="sr-only" for="journalEntry">Journal entry</label>
@@ -129,8 +129,8 @@
       <section class="journal-section">
         <div class="panel-head section-head">
           <div class="panel-title-wrap">
-            <p class="section-label">Journal history</p>
-            <h2>Notes and reflections</h2>
+            <p class="section-label">Today</p>
+            <h2>Emotion trail</h2>
           </div>
         </div>
 
@@ -149,8 +149,8 @@
     <aside class="panel feedback-panel">
       <div class="panel-head">
         <div class="panel-title-wrap">
-          <p class="section-label">Insights</p>
-          <h2>AI reflection</h2>
+          <p class="section-label">Analytics</p>
+          <h2>Emotional reading</h2>
         </div>
         <span class="ai-chip">AI-assisted</span>
       </div>
@@ -173,29 +173,48 @@
         </article>
       </div>
 
-      <div class="sidebar-section linked-notes">
-        <p class="sidebar-title">Linked notes</p>
-        <div class="link-list">
-          <span class="link-pill">School pressure</span>
-          <span class="link-pill">Sleep check-in</span>
-          <span class="link-pill">Weekend reset</span>
+      <details class="insight-accordion" open>
+        <summary>Summary and advice</summary>
+        <div class="result-stack">
+          <article class="result-card">
+            <h3>AI summary</h3>
+            <p id="summaryText">Your feedback summary will appear here.</p>
+          </article>
+          <article class="result-card">
+            <h3>Helpful advice</h3>
+            <ul id="adviceList"></ul>
+          </article>
+          <article class="result-card">
+            <h3>Reflection prompt</h3>
+            <p id="reflectionText">A gentle question will appear here.</p>
+          </article>
         </div>
-      </div>
+      </details>
 
-      <div class="result-stack">
-        <article class="result-card">
-          <h3>AI summary</h3>
-          <p id="summaryText">Your feedback summary will appear here.</p>
-        </article>
-        <article class="result-card">
-          <h3>Helpful advice</h3>
-          <ul id="adviceList"></ul>
-        </article>
-        <article class="result-card">
-          <h3>Reflection prompt</h3>
-          <p id="reflectionText">A gentle question will appear here.</p>
-        </article>
-      </div>
+      <details class="insight-accordion">
+        <summary>How the model learned</summary>
+        <div class="detail-grid">
+          <article class="result-card">
+            <h3>Learning status</h3>
+            <p id="modelLearnedText">The analyzer learns from saved entries in this browser.</p>
+          </article>
+          <article class="result-card">
+            <h3>Training size</h3>
+            <p><strong id="modelEntryCount">0</strong> saved entries have shaped the local model.</p>
+          </article>
+        </div>
+      </details>
+
+      <details class="insight-accordion">
+        <summary>Linked notes</summary>
+        <div class="sidebar-section linked-notes">
+          <div class="link-list">
+            <span class="link-pill">School pressure</span>
+            <span class="link-pill">Sleep check-in</span>
+            <span class="link-pill">Weekend reset</span>
+          </div>
+        </div>
+      </details>
 
       <div id="safetyBanner" class="safety-banner hidden"></div>
     </aside>

@@ -1,16 +1,17 @@
 # Release Notes
 
-## v1.0.1 - Demo Release
+## v1.1.0 - Journal Layout + Local Learning
 
-This release packages the local journaling app as a clean demo build.
+This release makes the app feel more like a normal journal while keeping the AI assistance subtle.
 
 ### Included
 
-- Journal workspace inspired by popular note and writing apps
-- AI-assisted emotional reflection
-- Local mood charts and saved history
-- Theme picker with compact swatches
-- Light and dark appearance support
+- Entries list and search on the left
+- Today's entry centered in the workspace
+- Expandable analytics on the right
+- Local learning from saved journal entries
+- Mood timeline and emotion breakdown charts
+- Theme picker and light/dark support
 
 ### Notes
 

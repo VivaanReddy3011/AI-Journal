@@ -1,5 +1,6 @@
 const STORAGE_KEY = "student-journal-demo-entries";
 const THEME_STORAGE_KEY = "student-journal-theme";
+const MODEL_STORAGE_KEY = "student-journal-model";
 
 const THEME_PRESETS = {
   paper: {
@@ -547,6 +548,7 @@ const els = {
   trendChart: document.getElementById("trendChart"),
   emotionChart: document.getElementById("emotionChart"),
   storageStatus: document.getElementById("storageStatus"),
+  wordCountChip: document.getElementById("wordCountChip"),
   entryTemplate: document.getElementById("entryTemplate"),
   todayLabel: document.getElementById("todayLabel"),
   modeToggleBtn: document.getElementById("modeToggleBtn"),
@@ -555,11 +557,21 @@ const els = {
   themeMenu: document.getElementById("themeMenu"),
   currentThemeLabel: document.getElementById("currentThemeLabel"),
   themeButtonSwatch: document.getElementById("themeButtonSwatch"),
+  modelLearnedText: document.getElementById("modelLearnedText"),
+  modelEntryCount: document.getElementById("modelEntryCount"),
+  noteSearch: document.getElementById("noteSearch"),
 };
 
 let entries = loadEntries();
 let themeState = loadThemeState();
 let themeMenuOpen = false;
+let modelState = loadModelState();
+
+if (!modelState.entriesTrained && entries.length) {
+  entries.slice().reverse().forEach((item) => {
+    trainLocalModel(item.text, item.analysis);
+  });
+}
 
 function loadThemeState() {
   try {
@@ -576,6 +588,36 @@ function loadThemeState() {
 
 function saveThemeState() {
   localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(themeState));
+}
+
+function loadModelState() {
+  try {
+    const raw = localStorage.getItem(MODEL_STORAGE_KEY);
+    if (!raw) {
+      return {
+        version: 1,
+        entriesTrained: 0,
+        wordWeights: {},
+      };
+    }
+
+    const parsed = JSON.parse(raw);
+    return {
+      version: 1,
+      entriesTrained: Number(parsed.entriesTrained) || 0,
+      wordWeights: parsed.wordWeights && typeof parsed.wordWeights === "object" ? parsed.wordWeights : {},
+    };
+  } catch {
+    return {
+      version: 1,
+      entriesTrained: 0,
+      wordWeights: {},
+    };
+  }
+}
+
+function saveModelState() {
+  localStorage.setItem(MODEL_STORAGE_KEY, JSON.stringify(modelState));
 }
 
 function getThemeDefinition(themeId = themeState.id) {
@@ -716,9 +758,171 @@ function countMatches(text, list) {
   return list.reduce((count, phrase) => count + (normalized.includes(phrase) ? 1 : 0), 0);
 }
 
+const MODEL_STOP_WORDS = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "that",
+  "this",
+  "was",
+  "were",
+  "you",
+  "your",
+  "but",
+  "not",
+  "have",
+  "has",
+  "had",
+  "are",
+  "from",
+  "they",
+  "them",
+  "been",
+  "just",
+  "too",
+  "very",
+  "really",
+  "today",
+  "yesterday",
+  "tomorrow",
+  "about",
+  "into",
+  "what",
+  "when",
+  "where",
+  "there",
+  "here",
+  "feel",
+  "feels",
+  "feeling",
+  "am",
+  "im",
+  "i'm",
+  "it's",
+  "its",
+  "my",
+  "me",
+  "it",
+  "of",
+  "to",
+  "in",
+  "on",
+  "at",
+  "is",
+  "a",
+  "an",
+  "as",
+  "we",
+  "us",
+  "our",
+  "or",
+]);
+
+function cloneWeightBucket() {
+  return {
+    positive: 0,
+    stress: 0,
+    sadness: 0,
+    anger: 0,
+    hope: 0,
+    fatigue: 0,
+    loneliness: 0,
+    school: 0,
+    friends: 0,
+    family: 0,
+    sleep: 0,
+    selfWorth: 0,
+  };
+}
+
+function ensureWeightBucket(token) {
+  if (!modelState.wordWeights[token]) {
+    modelState.wordWeights[token] = cloneWeightBucket();
+  }
+  return modelState.wordWeights[token];
+}
+
+function normalizeWeights(weights) {
+  const rounded = {};
+  Object.entries(weights).forEach(([key, value]) => {
+    rounded[key] = Number(value.toFixed(3));
+  });
+  return rounded;
+}
+
+function getMoodTrainingProfile(analysis) {
+  const profiles = {
+    hopeful: { positive: 1, hope: 0.8 },
+    balanced: { positive: 0.6, hope: 0.4 },
+    mixed: { positive: 0.25, stress: 0.2, sadness: 0.2 },
+    stressed: { stress: 1, fatigue: 0.55, loneliness: 0.4 },
+    sad: { sadness: 1, loneliness: 0.45, fatigue: 0.35 },
+    frustrated: { anger: 1, stress: 0.45 },
+    heavy: { sadness: 0.8, fatigue: 0.6, loneliness: 0.35 },
+  };
+
+  const emotionProfile = profiles[analysis.mood] || profiles.mixed;
+  return {
+    ...emotionProfile,
+    [analysis.topEmotion]: Math.max(emotionProfile[analysis.topEmotion] || 0, 0.7),
+  };
+}
+
+function getThemeTrainingProfile(theme) {
+  const profiles = {
+    school: { school: 1 },
+    friends: { friends: 1 },
+    family: { family: 1 },
+    sleep: { sleep: 1 },
+    selfWorth: { selfWorth: 1 },
+  };
+
+  return profiles[theme] || {};
+}
+
+function getLearnedSignals(tokens) {
+  const emotionalTotals = cloneWeightBucket();
+  const themeTotals = cloneWeightBucket();
+
+  tokens.forEach((token) => {
+    const learned = modelState.wordWeights[token];
+    if (!learned) return;
+
+    Object.entries(learned).forEach(([key, value]) => {
+      if (Object.hasOwn(emotionalTotals, key)) emotionalTotals[key] += value;
+      if (Object.hasOwn(themeTotals, key)) themeTotals[key] += value;
+    });
+  });
+
+  return { emotionalTotals, themeTotals };
+}
+
+function trainLocalModel(text, analysis) {
+  const tokens = [...new Set(tokenize(text).filter((token) => token.length > 2 && !MODEL_STOP_WORDS.has(token)))];
+  const emotionProfile = getMoodTrainingProfile(analysis);
+  const themeProfile = getThemeTrainingProfile(analysis.topTheme);
+  const learningRate = Math.min(0.45, 0.1 + analysis.intensity * 0.2);
+
+  tokens.forEach((token) => {
+    const bucket = ensureWeightBucket(token);
+    Object.entries(emotionProfile).forEach(([key, value]) => {
+      if (Object.hasOwn(bucket, key)) bucket[key] += value * learningRate;
+    });
+    Object.entries(themeProfile).forEach(([key, value]) => {
+      if (Object.hasOwn(bucket, key)) bucket[key] += value * learningRate;
+    });
+    modelState.wordWeights[token] = normalizeWeights(bucket);
+  });
+
+  modelState.entriesTrained += 1;
+  saveModelState();
+}
+
 function scoreEmotion(text) {
   const tokens = tokenize(text);
   const normalized = ` ${tokens.join(" ")} `;
+  const learned = getLearnedSignals(tokens);
   const counts = {
     positive: countMatches(text, EMOTION_WORDS.positive),
     stress: countMatches(text, EMOTION_WORDS.stress),
@@ -729,12 +933,20 @@ function scoreEmotion(text) {
     loneliness: countMatches(text, EMOTION_WORDS.loneliness),
   };
 
+  Object.entries(learned.emotionalTotals).forEach(([key, value]) => {
+    if (Object.hasOwn(counts, key)) counts[key] += value * 0.35;
+  });
+
   const intensifiers = countMatches(text, ["very", "so", "really", "extremely", "always", "never", "too", "super", "totally"]);
   const punctuationBoost = (text.match(/[!?]/g) || []).length * 0.2;
 
   const themeCounts = Object.fromEntries(
     Object.entries(THEME_WORDS).map(([theme, words]) => [theme, countMatches(text, words)])
   );
+
+  Object.entries(learned.themeTotals).forEach(([key, value]) => {
+    if (Object.hasOwn(themeCounts, key)) themeCounts[key] += value * 0.35;
+  });
 
   const crisis = CRISIS_PATTERNS.some((pattern) => normalized.includes(` ${pattern} `) || text.toLowerCase().includes(pattern));
   const toneScore =
@@ -913,6 +1125,7 @@ function analyzeAndSave(text) {
     analysis,
     feedback,
   };
+  trainLocalModel(text, analysis);
   entries.unshift(item);
   entries = entries.slice(0, 30);
   saveEntries();
@@ -980,16 +1193,22 @@ function renderThemeList() {
 
 function renderEntries() {
   els.entryList.innerHTML = "";
+  const query = els.noteSearch?.value.trim().toLowerCase() || "";
+  const filteredEntries = query
+    ? entries.filter((item) => item.text.toLowerCase().includes(query) || item.analysis.mood.toLowerCase().includes(query))
+    : entries;
 
-  if (!entries.length) {
+  if (!filteredEntries.length) {
     const empty = document.createElement("p");
     empty.className = "microcopy";
-    empty.textContent = "Your saved entries will appear here after the first analysis.";
+    empty.textContent = query
+      ? "No entries match this search."
+      : "Your saved entries will appear here after the first analysis.";
     els.entryList.appendChild(empty);
     return;
   }
 
-  entries.slice(0, 6).forEach((item) => {
+  filteredEntries.slice(0, 6).forEach((item) => {
     const node = els.entryTemplate.content.cloneNode(true);
     const card = node.querySelector(".entry-card");
     const date = node.querySelector(".entry-date");
@@ -1150,13 +1369,34 @@ function renderApp(lastItem) {
     els.safetyBanner.classList.add("hidden");
   }
 
+  renderModelStatus();
   renderThemeList();
   renderEntries();
   renderDashboard();
+  updateWordCount();
+}
+
+function renderModelStatus() {
+  const trainedCount = modelState.entriesTrained || 0;
+  if (els.modelEntryCount) {
+    els.modelEntryCount.textContent = trainedCount;
+  }
+  if (els.modelLearnedText) {
+    els.modelLearnedText.textContent = trainedCount
+      ? `This local model has learned from ${trainedCount} saved journal entries and adjusts its word weights over time.`
+      : "The analyzer learns from saved entries in this browser.";
+  }
+}
+
+function updateWordCount() {
+  if (!els.wordCountChip || !els.entry) return;
+  const count = tokenize(els.entry.value.trim()).length;
+  els.wordCountChip.textContent = `${count} word${count === 1 ? "" : "s"}`;
 }
 
 function insertSampleText() {
   els.entry.value = `Today school felt like a lot. I had too much homework, my brain felt tired, and I kept thinking about the exam. I am a little stressed, but I still want to do better tomorrow. Maybe if I sleep early and make a smaller plan, things will feel easier.`;
+  updateWordCount();
 }
 
 els.analyzeBtn.addEventListener("click", () => {
@@ -1169,11 +1409,14 @@ els.analyzeBtn.addEventListener("click", () => {
   els.entry.value = "";
 });
 
+els.entry.addEventListener("input", updateWordCount);
+els.noteSearch?.addEventListener("input", renderEntries);
 els.sampleBtn.addEventListener("click", insertSampleText);
 els.loadDemoBtn.addEventListener("click", () => {
   insertSampleText();
   analyzeAndSave(els.entry.value.trim());
   els.entry.value = "";
+  updateWordCount();
 });
 
 els.clearAllBtn.addEventListener("click", () => {
@@ -1181,6 +1424,12 @@ els.clearAllBtn.addEventListener("click", () => {
   if (!ok) return;
   entries = [];
   localStorage.removeItem(STORAGE_KEY);
+  modelState = {
+    version: 1,
+    entriesTrained: 0,
+    wordWeights: {},
+  };
+  saveModelState();
   renderApp();
 });
 
@@ -1203,3 +1452,4 @@ applyThemeState();
 updateTodayLabel();
 renderThemeMenu();
 renderApp();
+updateWordCount();

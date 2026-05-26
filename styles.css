@@ -163,7 +163,7 @@ h1 {
   width: var(--page-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(240px, 276px) minmax(0, 1fr) minmax(280px, 320px);
+  grid-template-columns: minmax(240px, 268px) minmax(0, 1fr) minmax(280px, 332px);
   gap: 14px;
   align-items: start;
 }
@@ -246,6 +246,11 @@ h1 {
   margin-top: 24px;
   padding-top: 4px;
   border-top: 1px solid var(--panel-border);
+}
+
+.detail-grid {
+  display: grid;
+  gap: 12px;
 }
 
 .sidebar-section {
@@ -579,6 +584,46 @@ button:active {
 .feedback-grid {
   grid-template-columns: 1fr;
   margin-bottom: 16px;
+}
+
+.insight-accordion {
+  margin-bottom: 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  background: var(--card-bg);
+  overflow: hidden;
+}
+
+.insight-accordion summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.insight-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.insight-accordion summary::after {
+  content: "+";
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.insight-accordion[open] summary::after {
+  content: "−";
+}
+
+.insight-accordion > .result-stack,
+.insight-accordion > .detail-grid,
+.insight-accordion > .linked-notes {
+  padding: 0 14px 14px;
 }
 
 .metric-card,
