@@ -9,22 +9,22 @@
 <body>
   <header class="topbar">
     <div class="brand-block">
-      <p class="eyebrow">Private journal</p>
       <h1>Student Journal</h1>
       <p class="subtitle">Write freely, then get a quiet AI-assisted reflection on the mood of your entry.</p>
     </div>
     <div class="topbar-actions">
-      <button id="modeToggleBtn" class="mode-toggle secondary-btn" type="button" aria-pressed="false" aria-label="Toggle light or dark mode">
-        <span class="mode-icon" aria-hidden="true">◐</span>
-        <span id="modeLabel">Light mode</span>
+      <button id="modeToggleBtn" class="mode-toggle secondary-btn" type="button" aria-pressed="false" aria-label="Toggle appearance">
+        <span id="modeIcon" class="mode-icon" aria-hidden="true">☀</span>
       </button>
       <div class="theme-picker">
-        <button id="themeMenuBtn" class="theme-btn secondary-btn" type="button" aria-haspopup="menu" aria-expanded="false">
-          <span class="theme-icon" aria-hidden="true">◌</span>
-          <span class="theme-copy">
-            <span class="theme-btn-label">Theme</span>
-            <span id="currentThemeLabel" class="theme-btn-value">Paper • Light</span>
+        <button id="themeMenuBtn" class="theme-btn secondary-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Choose theme">
+          <span class="theme-icon" aria-hidden="true">
+            <span class="theme-swatch theme-swatch-button" id="themeButtonSwatch">
+              <span class="theme-swatch-light"></span>
+              <span class="theme-swatch-dark"></span>
+            </span>
           </span>
+          <span id="currentThemeLabel" class="theme-btn-value">Paper</span>
         </button>
         <div id="themeMenu" class="theme-menu hidden" role="menu" aria-label="Theme selection"></div>
       </div>

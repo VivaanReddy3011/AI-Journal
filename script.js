@@ -549,10 +549,11 @@ const els = {
   storageStatus: document.getElementById("storageStatus"),
   entryTemplate: document.getElementById("entryTemplate"),
   modeToggleBtn: document.getElementById("modeToggleBtn"),
-  modeLabel: document.getElementById("modeLabel"),
+  modeIcon: document.getElementById("modeIcon"),
   themeMenuBtn: document.getElementById("themeMenuBtn"),
   themeMenu: document.getElementById("themeMenu"),
   currentThemeLabel: document.getElementById("currentThemeLabel"),
+  themeButtonSwatch: document.getElementById("themeButtonSwatch"),
 };
 
 let entries = loadEntries();
@@ -604,9 +605,11 @@ function applyThemeState() {
   root.dataset.mode = themeState.mode;
 
   els.modeToggleBtn.setAttribute("aria-pressed", themeState.mode === "dark" ? "true" : "false");
-  els.modeLabel.textContent = themeState.mode === "dark" ? "Dark mode" : "Light mode";
+  els.modeIcon.textContent = themeState.mode === "dark" ? "☾" : "☀";
   els.themeMenuBtn.setAttribute("aria-expanded", themeMenuOpen ? "true" : "false");
-  els.currentThemeLabel.textContent = `${theme.label} • ${themeState.mode === "dark" ? "Dark" : "Light"}`;
+  els.currentThemeLabel.textContent = theme.label;
+  els.themeButtonSwatch.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
+  els.themeButtonSwatch.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
 }
 
 function toKebabCase(value) {
@@ -645,7 +648,6 @@ function renderThemeMenu() {
         <span class="theme-option-name">${theme.label}</span>
         <span class="theme-option-note">${theme.note}</span>
       </span>
-      <span class="theme-option-mode">${themeState.mode}</span>
     `;
     button.style.setProperty("--theme-light-surface", theme.light.surfaceStrong);
     button.style.setProperty("--theme-dark-surface", theme.dark.surfaceStrong);
