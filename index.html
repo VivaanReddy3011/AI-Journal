@@ -3,29 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Journal - Emotional Feedback Demo</title>
+  <title>Student Journal</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-orb orb-one"></div>
-  <div class="bg-orb orb-two"></div>
-
   <header class="topbar">
-    <div>
-      <p class="eyebrow">Local-first student journal</p>
+    <div class="brand-block">
+      <p class="eyebrow">Private journal</p>
       <h1>Student Journal</h1>
-      <p class="subtitle">Write it down, get a gentle emotional read, and see your mood patterns over time.</p>
+      <p class="subtitle">Write freely, then get a quiet AI-assisted reflection on the mood of your entry.</p>
     </div>
     <div class="topbar-actions">
-      <button id="loadDemoBtn" class="secondary-btn" type="button">Load demo entry</button>
-      <button id="clearAllBtn" class="ghost-btn" type="button">Clear all data</button>
+      <button id="loadDemoBtn" class="secondary-btn" type="button">Try sample entry</button>
+      <button id="clearAllBtn" class="ghost-btn" type="button">Clear journal</button>
     </div>
   </header>
 
   <main class="layout">
     <section class="panel composer-panel">
       <div class="panel-head">
-        <div>
+        <div class="panel-title-wrap">
           <p class="section-label">Journal entry</p>
           <h2>How are you feeling today?</h2>
         </div>
@@ -36,34 +33,35 @@
       <textarea id="journalEntry" placeholder="Write about school, friends, stress, wins, worries, or anything on your mind..."></textarea>
 
       <div class="composer-actions">
-        <button id="analyzeBtn" class="primary-btn" type="button">Analyze and save</button>
-        <button id="sampleBtn" class="secondary-btn" type="button">Insert sample text</button>
+        <button id="analyzeBtn" class="primary-btn" type="button">Save and reflect</button>
+        <button id="sampleBtn" class="secondary-btn" type="button">Insert sample</button>
       </div>
 
-      <p class="microcopy">This demo runs entirely on your computer and stores data in your browser.</p>
+      <p class="microcopy">Everything stays in your browser. The AI hints are gentle, local, and supportive.</p>
     </section>
 
     <section class="panel feedback-panel">
       <div class="panel-head">
-        <div>
-          <p class="section-label">Emotional feedback</p>
-          <h2>What the journal seems to say</h2>
+        <div class="panel-title-wrap">
+          <p class="section-label">AI reflection</p>
+          <h2>What this entry seems to say</h2>
         </div>
+        <span class="ai-chip">AI-assisted</span>
       </div>
 
       <div class="feedback-grid">
         <article class="metric-card">
-          <span>Primary mood</span>
+          <span>Detected mood</span>
           <strong id="primaryMood">No entry yet</strong>
           <small id="moodDetail">Write something and analyze it to see the tone.</small>
         </article>
         <article class="metric-card">
-          <span>Intensity</span>
+          <span>Emotion strength</span>
           <strong id="intensityScore">0%</strong>
           <small id="intensityDetail">How strong the emotional language feels.</small>
         </article>
         <article class="metric-card">
-          <span>Top theme</span>
+          <span>Main topic</span>
           <strong id="topTheme">Unknown</strong>
           <small id="themeDetail">Common topic detected in the text.</small>
         </article>
@@ -71,11 +69,11 @@
 
       <div class="result-stack">
         <article class="result-card">
-          <h3>Summary</h3>
+          <h3>AI summary</h3>
           <p id="summaryText">Your feedback summary will appear here.</p>
         </article>
         <article class="result-card">
-          <h3>Advice</h3>
+          <h3>Helpful advice</h3>
           <ul id="adviceList"></ul>
         </article>
         <article class="result-card">
@@ -89,8 +87,8 @@
 
     <section class="panel dashboard-panel">
       <div class="panel-head">
-        <div>
-          <p class="section-label">Mood dashboard</p>
+        <div class="panel-title-wrap">
+          <p class="section-label">Journal history</p>
           <h2>Patterns from your recent entries</h2>
         </div>
       </div>

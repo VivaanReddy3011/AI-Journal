@@ -1,15 +1,15 @@
 :root {
-  --bg: #0b1020;
-  --bg-soft: rgba(14, 20, 39, 0.8);
-  --panel: rgba(18, 26, 50, 0.84);
-  --panel-border: rgba(255, 255, 255, 0.08);
-  --text: #ecf2ff;
-  --muted: #a9b6d3;
-  --accent: #74d3ff;
-  --accent-2: #9dffca;
-  --danger: #ff8ca8;
-  --shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
-  --radius: 22px;
+  --bg: #f4efe7;
+  --bg-soft: rgba(255, 255, 255, 0.85);
+  --panel: rgba(255, 255, 255, 0.9);
+  --panel-border: rgba(70, 54, 34, 0.08);
+  --text: #24190f;
+  --muted: #6c5a4b;
+  --accent: #7a5cff;
+  --accent-2: #0f8b6b;
+  --danger: #b0474f;
+  --shadow: 0 16px 40px rgba(74, 48, 23, 0.12);
+  --radius: 24px;
   --page-width: min(1180px, calc(100vw - 32px));
 }
 
@@ -26,37 +26,12 @@ body {
 body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(116, 211, 255, 0.18), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(157, 255, 202, 0.14), transparent 30%),
-    linear-gradient(180deg, #070b16 0%, #0b1020 50%, #0a0f1c 100%);
+    radial-gradient(circle at top left, rgba(122, 92, 255, 0.08), transparent 22%),
+    radial-gradient(circle at right center, rgba(15, 139, 107, 0.08), transparent 20%),
+    linear-gradient(180deg, #fbf8f3 0%, #f4efe7 40%, #efe7db 100%);
   color: var(--text);
   padding: 28px 0 40px;
   overflow-x: hidden;
-}
-
-.bg-orb {
-  position: fixed;
-  inset: auto;
-  border-radius: 999px;
-  filter: blur(32px);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.orb-one {
-  width: 220px;
-  height: 220px;
-  top: -60px;
-  right: -40px;
-  background: rgba(116, 211, 255, 0.18);
-}
-
-.orb-two {
-  width: 280px;
-  height: 280px;
-  bottom: -120px;
-  left: -80px;
-  background: rgba(157, 255, 202, 0.12);
 }
 
 .topbar,
@@ -70,7 +45,11 @@ body {
   justify-content: space-between;
   gap: 20px;
   align-items: flex-start;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
+}
+
+.brand-block {
+  max-width: 760px;
 }
 
 .eyebrow,
@@ -78,7 +57,7 @@ body {
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--accent);
+  color: var(--accent-2);
   font-size: 0.74rem;
   font-weight: 700;
 }
@@ -94,6 +73,7 @@ h1 {
   font-size: clamp(2.25rem, 5vw, 4.2rem);
   line-height: 0.95;
   margin-bottom: 12px;
+  letter-spacing: -0.04em;
 }
 
 .subtitle {
@@ -114,6 +94,9 @@ h1 {
 .layout {
   display: grid;
   gap: 18px;
+  grid-template-columns: minmax(0, 920px);
+  justify-content: center;
+  align-items: start;
 }
 
 .panel {
@@ -133,6 +116,11 @@ h1 {
   margin-bottom: 18px;
 }
 
+.panel-title-wrap h2 {
+  margin-bottom: 0;
+  font-size: 1.55rem;
+}
+
 .panel-head h2 {
   margin-bottom: 0;
   font-size: 1.4rem;
@@ -144,9 +132,22 @@ h1 {
   justify-content: center;
   padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(157, 255, 202, 0.12);
+  background: rgba(15, 139, 107, 0.12);
   color: var(--accent-2);
   font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.ai-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(122, 92, 255, 0.1);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -154,20 +155,20 @@ textarea {
   width: 100%;
   min-height: 220px;
   resize: vertical;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(88, 68, 48, 0.12);
   border-radius: 18px;
   padding: 18px;
-  background: rgba(7, 12, 25, 0.72);
+  background: #fffdf8;
   color: var(--text);
   font: inherit;
   line-height: 1.6;
   outline: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 textarea:focus {
-  border-color: rgba(116, 211, 255, 0.45);
-  box-shadow: 0 0 0 4px rgba(116, 211, 255, 0.08);
+  border-color: rgba(122, 92, 255, 0.38);
+  box-shadow: 0 0 0 4px rgba(122, 92, 255, 0.08);
 }
 
 button {
@@ -189,20 +190,20 @@ button:active {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--accent) 0%, #a6b8ff 100%);
-  color: #09111f;
+  background: linear-gradient(135deg, var(--accent) 0%, #9a86ff 100%);
+  color: #fff;
 }
 
 .secondary-btn {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.78);
   color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(70, 54, 34, 0.08);
 }
 
 .ghost-btn {
   background: transparent;
   color: var(--muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(70, 54, 34, 0.08);
 }
 
 .microcopy {
@@ -226,8 +227,8 @@ button:active {
 .result-card,
 .dashboard-card,
 .entry-card {
-  background: rgba(7, 12, 25, 0.46);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(251, 247, 240, 0.96));
+  border: 1px solid rgba(70, 54, 34, 0.08);
   border-radius: 18px;
   padding: 16px;
 }
@@ -278,9 +279,9 @@ button:active {
   margin-top: 14px;
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 140, 168, 0.26);
-  background: rgba(255, 140, 168, 0.12);
-  color: #ffd8e1;
+  border: 1px solid rgba(176, 71, 79, 0.24);
+  background: rgba(176, 71, 79, 0.08);
+  color: #8d333a;
   line-height: 1.6;
 }
 
@@ -296,7 +297,7 @@ button:active {
   width: 100%;
   height: auto;
   display: block;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.55);
   border-radius: 14px;
 }
 
@@ -313,7 +314,7 @@ button:active {
   align-items: center;
   padding: 12px 14px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(122, 92, 255, 0.06);
 }
 
 .theme-chip span:last-child {
@@ -340,7 +341,7 @@ button:active {
 .entry-mood {
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(116, 211, 255, 0.12);
+  background: rgba(122, 92, 255, 0.1);
   color: var(--accent);
   font-size: 0.82rem;
   text-transform: capitalize;
@@ -355,7 +356,7 @@ button:active {
   width: fit-content;
   background: transparent;
   color: var(--danger);
-  border: 1px solid rgba(255, 140, 168, 0.2);
+  border: 1px solid rgba(176, 71, 79, 0.16);
   padding: 8px 12px;
 }
 
@@ -373,6 +374,10 @@ button:active {
 @media (max-width: 980px) {
   .topbar {
     flex-direction: column;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
   }
 
   .feedback-grid,
