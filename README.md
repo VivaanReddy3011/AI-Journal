@@ -1,14 +1,31 @@
 # AI Journal
 
-A fast, local-first student journal demo that reads a journal entry, estimates the emotional tone, and returns gentle feedback plus a simple mood dashboard.
+AI Journal is a local-first student journaling demo that analyzes writing, estimates the emotional tone, and returns gentle feedback, practical advice, and a simple mood dashboard.
+
+## Demo Release
+
+- Version: `v1.0.1`
+- Run mode: local browser app
+- Storage: `localStorage`
+- APIs: none required
 
 ## Preview
 
 ![AI Journal demo preview](demo-preview.png)
 
-## What it does
+## What This Release Shows
 
-- Lets the student write a journal entry in the browser
+- A regular journaling workspace with AI tucked in quietly
+- Light and dark appearance toggle
+- 8 color themes with matching light and dark variants
+- Local emotion analysis for mood, intensity, and themes
+- Supportive feedback and reflection prompts
+- Mood trend and emotion breakdown charts
+- Saved entry history in the browser
+
+## What It Does
+
+- Lets a student write a journal entry directly in the browser
 - Scores the text with a lightweight local emotion model
 - Returns a mood label, intensity estimate, and supportive advice
 - Shows a dashboard with recent entries and recurring themes
@@ -41,9 +58,20 @@ You can also open `index.html` directly, but the local server is the cleaner opt
 - No external API is required
 - This is a supportive journaling demo, not a medical or clinical tool
 
-## Project Files
+## File Map
 
-- `index.html` - app structure
-- `styles.css` - visual design
+- `index.html` - app structure and workspace layout
+- `styles.css` - visual design and themes
 - `script.js` - analysis, feedback, and dashboard logic
 - `server.js` - tiny local server for localhost
+- `package.json` - project metadata and run script
+- `demo-preview.png` - repo preview image
+
+## Release Notes
+
+### v1.0.1
+
+- Refined the journaling workspace to feel closer to a real note app
+- Added compact theme controls and local theme persistence
+- Updated the README for a cleaner demo-release presentation
+- Kept the app free, local, and quick to run
