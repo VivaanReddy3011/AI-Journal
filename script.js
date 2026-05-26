@@ -639,8 +639,6 @@ let themeMenuOpen = false;
 let modelState = loadModelState();
 let selectedFolder = loadSelectedFolder();
 
-seedDemoEntriesIfNeeded();
-
 if (selectedFolder === null && entries.length) {
   selectedFolder = getEntryFolder(getSortedEntries()[0]);
   saveSelectedFolder();
@@ -961,6 +959,8 @@ const MODEL_STOP_WORDS = new Set([
   "our",
   "or",
 ]);
+
+seedDemoEntriesIfNeeded();
 
 function cloneWeightBucket() {
   return {
