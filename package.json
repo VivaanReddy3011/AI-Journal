@@ -1,0 +1,9 @@
+{
+  "name": "student-journal-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local emotional journal analysis demo",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

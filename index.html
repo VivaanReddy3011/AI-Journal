@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Journal - Emotional Feedback Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-one"></div>
+  <div class="bg-orb orb-two"></div>
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Local-first student journal</p>
+      <h1>Student Journal</h1>
+      <p class="subtitle">Write it down, get a gentle emotional read, and see your mood patterns over time.</p>
+    </div>
+    <div class="topbar-actions">
+      <button id="loadDemoBtn" class="secondary-btn" type="button">Load demo entry</button>
+      <button id="clearAllBtn" class="ghost-btn" type="button">Clear all data</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel composer-panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Journal entry</p>
+          <h2>How are you feeling today?</h2>
+        </div>
+        <span class="status-pill" id="storageStatus">Saved locally</span>
+      </div>
+
+      <label class="sr-only" for="journalEntry">Journal entry</label>
+      <textarea id="journalEntry" placeholder="Write about school, friends, stress, wins, worries, or anything on your mind..."></textarea>
+
+      <div class="composer-actions">
+        <button id="analyzeBtn" class="primary-btn" type="button">Analyze and save</button>
+        <button id="sampleBtn" class="secondary-btn" type="button">Insert sample text</button>
+      </div>
+
+      <p class="microcopy">This demo runs entirely on your computer and stores data in your browser.</p>
+    </section>
+
+    <section class="panel feedback-panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Emotional feedback</p>
+          <h2>What the journal seems to say</h2>
+        </div>
+      </div>
+
+      <div class="feedback-grid">
+        <article class="metric-card">
+          <span>Primary mood</span>
+          <strong id="primaryMood">No entry yet</strong>
+          <small id="moodDetail">Write something and analyze it to see the tone.</small>
+        </article>
+        <article class="metric-card">
+          <span>Intensity</span>
+          <strong id="intensityScore">0%</strong>
+          <small id="intensityDetail">How strong the emotional language feels.</small>
+        </article>
+        <article class="metric-card">
+          <span>Top theme</span>
+          <strong id="topTheme">Unknown</strong>
+          <small id="themeDetail">Common topic detected in the text.</small>
+        </article>
+      </div>
+
+      <div class="result-stack">
+        <article class="result-card">
+          <h3>Summary</h3>
+          <p id="summaryText">Your feedback summary will appear here.</p>
+        </article>
+        <article class="result-card">
+          <h3>Advice</h3>
+          <ul id="adviceList"></ul>
+        </article>
+        <article class="result-card">
+          <h3>Reflection prompt</h3>
+          <p id="reflectionText">A gentle question will appear here.</p>
+        </article>
+      </div>
+
+      <div id="safetyBanner" class="safety-banner hidden"></div>
+    </section>
+
+    <section class="panel dashboard-panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Mood dashboard</p>
+          <h2>Patterns from your recent entries</h2>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="dashboard-card chart-card">
+          <h3>Mood trend</h3>
+          <canvas id="trendChart" width="560" height="220"></canvas>
+        </article>
+        <article class="dashboard-card chart-card">
+          <h3>Emotion breakdown</h3>
+          <canvas id="emotionChart" width="560" height="220"></canvas>
+        </article>
+        <article class="dashboard-card">
+          <h3>Common themes</h3>
+          <div id="themeList" class="theme-list"></div>
+        </article>
+        <article class="dashboard-card">
+          <h3>Recent entries</h3>
+          <div id="entryList" class="entry-list"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <template id="entryTemplate">
+    <article class="entry-card">
+      <div class="entry-head">
+        <strong class="entry-date"></strong>
+        <span class="entry-mood"></span>
+      </div>
+      <p class="entry-excerpt"></p>
+      <button class="entry-delete" type="button">Delete</button>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
