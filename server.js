@@ -4,6 +4,7 @@ const path = require("path");
 
 const root = __dirname;
 const port = process.env.PORT || 3000;
+const buildVersion = "20260526-4";
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -19,7 +20,18 @@ const mimeTypes = {
 
 const server = http.createServer((req, res) => {
   const requestPath = decodeURIComponent((req.url || "/").split("?")[0]);
-  const safePath = requestPath === "/" ? "/index.html" : requestPath;
+  if (requestPath === "/") {
+    res.writeHead(302, {
+      Location: `/index.html?v=${buildVersion}`,
+      "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+    res.end();
+    return;
+  }
+
+  const safePath = requestPath;
   const filePath = path.join(root, safePath);
   const ext = path.extname(filePath).toLowerCase();
   const contentType = mimeTypes[ext] || "application/octet-stream";
