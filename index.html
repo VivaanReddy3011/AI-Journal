@@ -55,21 +55,8 @@
       </div>
 
       <div class="sidebar-section">
-        <p class="sidebar-title">Pages</p>
-        <div class="page-list">
-          <button class="page-item active" type="button">
-            <span>Today</span>
-            <small>Current entry</small>
-          </button>
-          <button class="page-item" type="button">
-            <span>Journal</span>
-            <small>All notes</small>
-          </button>
-          <button class="page-item" type="button">
-            <span>Archive</span>
-            <small>Older entries</small>
-          </button>
-        </div>
+        <p class="sidebar-title">Folders</p>
+        <div id="folderList" class="folder-list"></div>
       </div>
 
       <div class="sidebar-section">
@@ -226,6 +213,7 @@
         <strong class="entry-date"></strong>
         <span class="entry-mood"></span>
       </div>
+      <div class="entry-tags"></div>
       <p class="entry-excerpt"></p>
       <button class="entry-delete" type="button">Delete</button>
     </article>

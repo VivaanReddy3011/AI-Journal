@@ -295,12 +295,12 @@ h1 {
   text-transform: uppercase;
 }
 
-.page-list {
+.folder-list {
   display: grid;
   gap: 10px;
 }
 
-.page-item {
+.folder-item {
   display: grid;
   gap: 3px;
   text-align: left;
@@ -311,15 +311,15 @@ h1 {
   border-radius: 16px;
 }
 
-.page-item span {
+.folder-item span {
   font-weight: 700;
 }
 
-.page-item small {
+.folder-item small {
   color: var(--muted);
 }
 
-.page-item.active {
+.folder-item.active {
   border-color: rgba(122, 92, 255, 0.2);
   box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.08);
 }
@@ -744,6 +744,21 @@ button:active {
 .entry-card {
   display: grid;
   gap: 10px;
+}
+
+.entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.entry-tag {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(122, 92, 255, 0.08);
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 700;
 }
 
 .entry-list .entry-card {

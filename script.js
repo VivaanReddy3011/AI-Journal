@@ -1,6 +1,8 @@
 const STORAGE_KEY = "student-journal-demo-entries";
 const THEME_STORAGE_KEY = "student-journal-theme";
 const MODEL_STORAGE_KEY = "student-journal-model";
+const FOLDER_STORAGE_KEY = "student-journal-folder";
+const DEMO_SEED_KEY = "student-journal-demo-seeded";
 
 const THEME_PRESETS = {
   paper: {
@@ -527,6 +529,75 @@ const CRISIS_PATTERNS = [
   "want to die",
 ];
 
+const DEMO_WEEK_ENTRIES = [
+  {
+    displayDate: "May 12 — Monday",
+    folder: "May 12 — Monday",
+    tags: ["stress", "college", "overthinking", "productivity", "lonely"],
+    journalDate: "2026-05-12T07:30:00.000Z",
+    text: `I woke up already feeling behind. Before I even got out of bed, I checked my phone and saw three unread messages in the class group about assignment submissions and attendance updates. That instantly ruined my mood. It feels like every single day starts with some reminder that I’m not doing enough. I skipped breakfast again because I left the hostel late and didn’t want to deal with crowded corridors or unnecessary conversations.
+
+Classes were exhausting today, especially the afternoon lab. Everyone else looked so focused while I kept drifting into random thoughts about internships, grades, future plans, and whether I’m actually capable of building the life I imagine for myself. Sometimes I genuinely can’t tell if I’m ambitious or just constantly anxious. There’s probably a thin line between the two.
+
+After college I came back to the hostel planning to finish my database assignment quickly, but instead I spent almost an hour staring at the screen doing absolutely nothing. I hate that feeling — wanting to work but somehow being mentally frozen. Eventually I forced myself to start with one small section, and once I got moving the rest became manageable. By midnight I had completed most of it. Not perfect, but done.
+
+I tried writing in the journal app before sleeping. At first it felt awkward typing personal thoughts into something I built myself, but after a few minutes it actually helped organize my head. The mood result came back as “overwhelmed but determined,” which honestly sounded more accurate than expected.
+
+Right now I’m lying in bed with headphones on, listening to slow music while the hostel hallway stays noisy as usual. Even with people everywhere, college life can feel strangely isolating.`,
+  },
+  {
+    displayDate: "May 13 — Tuesday",
+    folder: "May 13 — Tuesday",
+    tags: ["friendship", "burnout", "mentalhealth", "hostellife", "reflection"],
+    journalDate: "2026-05-13T07:30:00.000Z",
+    text: `Today felt emotionally heavy for no specific reason. Nothing terrible happened, but I spent most of the day feeling disconnected from everything around me. During lunch break Aarav asked if I was okay because apparently I’ve been quieter than usual lately. I laughed it off and made some joke about academic pressure slowly destroying my brain cells, but I think he could tell I wasn’t serious.
+
+The weird thing is I don’t even know how to explain what’s wrong. It’s not sadness exactly. More like mental exhaustion mixed with constant pressure. Every week feels like a race against deadlines that never actually ends. Even when I finish one thing, three more tasks immediately appear.
+
+Lab session went fine though. I helped one of my classmates debug a JavaScript issue, and for a few minutes I actually felt competent. Sometimes helping other people reminds me that I’ve learned more than I give myself credit for. I’m so used to comparing myself to people who seem smarter or more disciplined that I forget I’ve improved too.
+
+Back at the hostel I spent some time updating the UI colors for the journal project. It sounds minor, but changing the visual style made the app feel more alive somehow. I want it to feel calming instead of clinical. Most productivity apps look emotionally empty. I don’t want this one to feel like that.
+
+Tonight I skipped Instagram and wrote a proper journal entry instead. That’s probably healthier. Social media lately just makes me feel like everyone else is progressing faster. Better internships. Better grades. Better lives. Rationally I know nobody posts their failures online, but emotionally it still affects me.
+
+I really need proper rest. Not just sleep — actual mental rest.`,
+  },
+  {
+    displayDate: "May 14 — Wednesday",
+    folder: "May 14 — Wednesday",
+    tags: ["anxiety", "presentation", "embarrassment", "selfdoubt", "college"],
+    journalDate: "2026-05-14T07:30:00.000Z",
+    text: `Today was awful. We had a presentation during class, and even though I prepared for it last night, my mind completely froze halfway through speaking. One second I was explaining normally, and the next my brain just stopped working. I could literally hear my heartbeat while standing there. My hands started shaking slightly and I lost track of what I wanted to say.
+
+The worst part wasn’t even the presentation itself — it was the embarrassment afterward. I kept imagining everyone noticing how nervous I looked. Realistically, most people probably forgot about it within minutes because they’re focused on their own lives, but my brain keeps replaying the moment repeatedly like some cursed highlight reel.
+
+After class I avoided talking too much and went straight back to the hostel. I told myself I’d recover by being productive, but honestly I just ended up overthinking for hours. It’s frustrating how one bad moment can dominate an entire day mentally.
+
+Around evening I finally forced myself to work on the emotion analysis logic for the journal app. Surprisingly, coding helped calm me down. There’s something comforting about solving technical problems because they usually have clear answers. Human emotions don’t. Social situations don’t. But code either works or doesn’t work. That certainty feels safe sometimes.
+
+Later tonight I wrote about the presentation incident in the app itself. Seeing my thoughts written out made the whole thing feel smaller somehow. The app categorized the entry as “anxious with self-critical tendencies.” Accurate. Brutally accurate.
+
+I wish confidence came naturally to me. Some people speak so effortlessly in public while I mentally rehearse simple sentences before saying them out loud. Maybe it improves with practice. I hope so.`,
+  },
+  {
+    displayDate: "May 15 — Thursday",
+    folder: "May 15 — Thursday",
+    tags: ["family", "homesick", "hostel", "comfort", "nostalgia"],
+    journalDate: "2026-05-15T07:30:00.000Z",
+    text: `Mom called tonight while I was eating biscuits for dinner because I didn’t feel like going downstairs. First thing she asked was whether I’m eating properly. I automatically said yes even though that was objectively false. I don’t know why I lie about small things like that. Probably because I don’t want her worrying unnecessarily.
+
+She told me about random things happening back home — neighbors visiting, power cuts, relatives asking about college. Hearing familiar background sounds through the phone unexpectedly made me emotional. For a few minutes I missed home so much it physically hurt.
+
+Bangalore still feels temporary sometimes, even after spending so long here. I’ve built routines, friendships, projects, and memories in this city, but part of me still feels like a visitor. Maybe that’s just what growing up feels like — constantly existing between places instead of fully belonging anywhere.
+
+After the call I couldn’t focus much on work. I ended up scrolling through old photos from school days and family trips. Weird how nostalgia can make even ordinary moments feel special afterward. Back then I wanted independence so badly. Now I sometimes miss the simplicity of having fewer responsibilities.
+
+Eventually I worked a little on improving the dashboard section of the journal project. Added smoother transitions and reorganized the mood history layout. Small improvements, but satisfying. I like watching messy ideas slowly become real functioning systems.
+
+Tonight feels quieter than usual. Maybe because everyone’s busy preparing for internals. Or maybe I’m just more aware of my own thoughts today. Either way, I think I needed this slower evening.`,
+  },
+];
+
 const els = {
   entry: document.getElementById("journalEntry"),
   analyzeBtn: document.getElementById("analyzeBtn"),
@@ -566,6 +637,14 @@ let entries = loadEntries();
 let themeState = loadThemeState();
 let themeMenuOpen = false;
 let modelState = loadModelState();
+let selectedFolder = loadSelectedFolder();
+
+seedDemoEntriesIfNeeded();
+
+if (selectedFolder === null && entries.length) {
+  selectedFolder = getEntryFolder(getSortedEntries()[0]);
+  saveSelectedFolder();
+}
 
 if (!modelState.entriesTrained && entries.length) {
   entries.slice().reverse().forEach((item) => {
@@ -588,6 +667,19 @@ function loadThemeState() {
 
 function saveThemeState() {
   localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(themeState));
+}
+
+function loadSelectedFolder() {
+  try {
+    const raw = localStorage.getItem(FOLDER_STORAGE_KEY);
+    return raw || null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSelectedFolder() {
+  localStorage.setItem(FOLDER_STORAGE_KEY, selectedFolder);
 }
 
 function loadModelState() {
@@ -680,6 +772,56 @@ function loadEntries() {
 
 function saveEntries() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function formatDateLabel(dateValue) {
+  const date = new Date(dateValue);
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    weekday: "short",
+  }).format(date);
+}
+
+function getEntryFolder(item) {
+  if (item.folder) return item.folder;
+  return formatDateLabel(item.journalDate || item.createdAt);
+}
+
+function getEntryDisplayDate(item) {
+  return item.displayDate || formatDateLabel(item.journalDate || item.createdAt);
+}
+
+function createStoredEntry(text, meta = {}) {
+  const now = new Date().toISOString();
+  const journalDate = meta.journalDate || now;
+  const analysis = scoreEmotion(text);
+  const feedback = buildFeedback(analysis, text);
+
+  return {
+    id: crypto.randomUUID(),
+    createdAt: meta.createdAt || now,
+    journalDate,
+    displayDate: meta.displayDate || formatDateLabel(journalDate),
+    folder: meta.folder || formatDateLabel(journalDate),
+    tags: Array.isArray(meta.tags) ? meta.tags : [],
+    text,
+    analysis,
+    feedback,
+  };
+}
+
+function getSeededDemoEntries() {
+  return DEMO_WEEK_ENTRIES.map((entry) => createStoredEntry(entry.text, entry));
+}
+
+function seedDemoEntriesIfNeeded() {
+  const hasSeeded = localStorage.getItem(DEMO_SEED_KEY) === "true";
+  if (hasSeeded || entries.length) return;
+  entries = getSeededDemoEntries();
+  saveEntries();
+  localStorage.setItem(DEMO_SEED_KEY, "true");
+  entries.forEach((item) => trainLocalModel(item.text, item.analysis));
 }
 
 function renderThemeMenu() {
@@ -1117,16 +1259,8 @@ function moodColor(mood) {
 }
 
 function analyzeAndSave(text) {
-  const analysis = scoreEmotion(text);
-  const feedback = buildFeedback(analysis, text);
-  const item = {
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-    text,
-    analysis,
-    feedback,
-  };
-  trainLocalModel(text, analysis);
+  const item = createStoredEntry(text);
+  trainLocalModel(text, item.analysis);
   entries.unshift(item);
   entries = entries.slice(0, 30);
   saveEntries();
@@ -1192,36 +1326,106 @@ function renderThemeList() {
   });
 }
 
+function getSortedEntries() {
+  return [...entries].sort((a, b) => new Date(b.journalDate || b.createdAt) - new Date(a.journalDate || a.createdAt));
+}
+
+function getVisibleEntries() {
+  const query = els.noteSearch?.value.trim().toLowerCase() || "";
+  const folderMatches = (item) => selectedFolder === "all" || getEntryFolder(item) === selectedFolder;
+  return getSortedEntries().filter((item) => {
+    if (!folderMatches(item)) return false;
+    if (!query) return true;
+    return item.text.toLowerCase().includes(query) || item.analysis.mood.toLowerCase().includes(query) || (item.tags || []).some((tag) => tag.toLowerCase().includes(query));
+  });
+}
+
+function renderFolders() {
+  if (!els.folderList) return;
+
+  const folderStats = new Map();
+  getSortedEntries().forEach((item) => {
+    const folder = getEntryFolder(item);
+    const stamp = new Date(item.journalDate || item.createdAt).getTime();
+    const current = folderStats.get(folder) || { count: 0, latest: 0 };
+    folderStats.set(folder, {
+      count: current.count + 1,
+      latest: Math.max(current.latest, Number.isFinite(stamp) ? stamp : 0),
+    });
+  });
+
+  const folders = [
+    { key: "all", label: "All entries", note: `${entries.length} total` },
+    ...Array.from(folderStats.entries())
+      .sort((a, b) => b[1].latest - a[1].latest)
+      .map(([folder, meta]) => ({
+        key: folder,
+        label: folder,
+        note: `${meta.count} ${meta.count === 1 ? "entry" : "entries"}`,
+      })),
+  ];
+
+  if (selectedFolder !== "all" && !folderStats.has(selectedFolder)) {
+    selectedFolder = "all";
+    saveSelectedFolder();
+  }
+
+  els.folderList.innerHTML = "";
+
+  folders.forEach((folder) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `folder-item${selectedFolder === folder.key ? " active" : ""}`;
+    button.innerHTML = `
+      <span>${folder.label}</span>
+      <small>${folder.note}</small>
+    `;
+    button.addEventListener("click", () => {
+      selectedFolder = folder.key;
+      saveSelectedFolder();
+      renderApp();
+    });
+    els.folderList.appendChild(button);
+  });
+}
+
 function renderEntries() {
   els.entryList.innerHTML = "";
-  const query = els.noteSearch?.value.trim().toLowerCase() || "";
-  const filteredEntries = query
-    ? entries.filter((item) => item.text.toLowerCase().includes(query) || item.analysis.mood.toLowerCase().includes(query))
-    : entries;
+  const filteredEntries = getVisibleEntries();
 
   if (!filteredEntries.length) {
     const empty = document.createElement("p");
     empty.className = "microcopy";
+    const query = els.noteSearch?.value.trim();
     empty.textContent = query
       ? "No entries match this search."
-      : "Your saved entries will appear here after the first analysis.";
+      : selectedFolder === "all"
+        ? "Your saved entries will appear here after the first analysis."
+        : "No entries in this folder yet.";
     els.entryList.appendChild(empty);
     return;
   }
 
   filteredEntries.slice(0, 6).forEach((item) => {
     const node = els.entryTemplate.content.cloneNode(true);
-    const card = node.querySelector(".entry-card");
     const date = node.querySelector(".entry-date");
     const mood = node.querySelector(".entry-mood");
+    const tags = node.querySelector(".entry-tags");
     const excerpt = node.querySelector(".entry-excerpt");
     const del = node.querySelector(".entry-delete");
 
-    date.textContent = formatDate(item.createdAt);
+    date.textContent = getEntryDisplayDate(item);
     mood.textContent = item.analysis.mood;
     mood.style.background = `${moodColor(item.analysis.mood)}22`;
     mood.style.color = moodColor(item.analysis.mood);
     excerpt.textContent = item.text.length > 160 ? `${item.text.slice(0, 160)}...` : item.text;
+    tags.innerHTML = "";
+    (item.tags || []).slice(0, 5).forEach((tag) => {
+      const chip = document.createElement("span");
+      chip.className = "entry-tag";
+      chip.textContent = `#${tag}`;
+      tags.appendChild(chip);
+    });
     del.addEventListener("click", () => {
       entries = entries.filter((entry) => entry.id !== item.id);
       saveEntries();
@@ -1355,21 +1559,26 @@ function renderApp(lastItem) {
   if (lastItem) {
     renderFeedback(lastItem);
     els.storageStatus.textContent = "Saved locally";
-  } else if (entries[0]) {
-    renderFeedback(entries[0]);
   } else {
-    els.primaryMood.textContent = "No entry yet";
-    els.moodDetail.textContent = "Write something and analyze it to see the tone.";
-    els.intensityScore.textContent = "0%";
-    els.intensityDetail.textContent = "How strong the emotional language feels.";
-    els.topTheme.textContent = "Unknown";
-    els.themeDetail.textContent = "Common topic detected in the text.";
-    els.summaryText.textContent = "Your feedback summary will appear here.";
-    els.adviceList.innerHTML = "";
-    els.reflectionText.textContent = "A gentle question will appear here.";
-    els.safetyBanner.classList.add("hidden");
+    const visibleEntries = getVisibleEntries();
+    const fallbackItem = visibleEntries[0] || getSortedEntries()[0];
+    if (fallbackItem) {
+      renderFeedback(fallbackItem);
+    } else {
+      els.primaryMood.textContent = "No entry yet";
+      els.moodDetail.textContent = "Write something and analyze it to see the tone.";
+      els.intensityScore.textContent = "0%";
+      els.intensityDetail.textContent = "How strong the emotional language feels.";
+      els.topTheme.textContent = "Unknown";
+      els.themeDetail.textContent = "Common topic detected in the text.";
+      els.summaryText.textContent = "Your feedback summary will appear here.";
+      els.adviceList.innerHTML = "";
+      els.reflectionText.textContent = "A gentle question will appear here.";
+      els.safetyBanner.classList.add("hidden");
+    }
   }
 
+  renderFolders();
   renderModelStatus();
   renderThemeList();
   renderEntries();
@@ -1425,6 +1634,8 @@ els.clearAllBtn.addEventListener("click", () => {
   if (!ok) return;
   entries = [];
   localStorage.removeItem(STORAGE_KEY);
+  selectedFolder = "all";
+  saveSelectedFolder();
   modelState = {
     version: 1,
     entriesTrained: 0,
