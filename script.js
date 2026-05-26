@@ -3,6 +3,31 @@ const THEME_STORAGE_KEY = "student-journal-theme";
 const MODEL_STORAGE_KEY = "student-journal-model";
 const FOLDER_STORAGE_KEY = "student-journal-folder";
 const DEMO_SEED_KEY = "student-journal-demo-seeded";
+const memoryStorage = new Map();
+
+function getStoredItem(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return memoryStorage.has(key) ? memoryStorage.get(key) : null;
+  }
+}
+
+function setStoredItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    memoryStorage.set(key, value);
+  }
+}
+
+function removeStoredItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    memoryStorage.delete(key);
+  }
+}
 
 const THEME_PRESETS = {
   paper: {
@@ -652,7 +677,7 @@ if (!modelState.entriesTrained && entries.length) {
 
 function loadThemeState() {
   try {
-    const raw = localStorage.getItem(THEME_STORAGE_KEY);
+    const raw = getStoredItem(THEME_STORAGE_KEY);
     if (!raw) return { ...DEFAULT_THEME };
     const parsed = JSON.parse(raw);
     const themeId = THEME_PRESETS[parsed.id] ? parsed.id : DEFAULT_THEME.id;
@@ -664,12 +689,12 @@ function loadThemeState() {
 }
 
 function saveThemeState() {
-  localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(themeState));
+  setStoredItem(THEME_STORAGE_KEY, JSON.stringify(themeState));
 }
 
 function loadSelectedFolder() {
   try {
-    const raw = localStorage.getItem(FOLDER_STORAGE_KEY);
+    const raw = getStoredItem(FOLDER_STORAGE_KEY);
     return raw || null;
   } catch {
     return null;
@@ -677,12 +702,12 @@ function loadSelectedFolder() {
 }
 
 function saveSelectedFolder() {
-  localStorage.setItem(FOLDER_STORAGE_KEY, selectedFolder);
+  setStoredItem(FOLDER_STORAGE_KEY, selectedFolder);
 }
 
 function loadModelState() {
   try {
-    const raw = localStorage.getItem(MODEL_STORAGE_KEY);
+    const raw = getStoredItem(MODEL_STORAGE_KEY);
     if (!raw) {
       return {
         version: 1,
@@ -707,7 +732,7 @@ function loadModelState() {
 }
 
 function saveModelState() {
-  localStorage.setItem(MODEL_STORAGE_KEY, JSON.stringify(modelState));
+  setStoredItem(MODEL_STORAGE_KEY, JSON.stringify(modelState));
 }
 
 function getThemeDefinition(themeId = themeState.id) {
@@ -761,15 +786,16 @@ function toKebabCase(value) {
 
 function loadEntries() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const raw = getStoredItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
 }
 
 function saveEntries() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  setStoredItem(STORAGE_KEY, JSON.stringify(entries));
 }
 
 function formatDateLabel(dateValue) {
@@ -795,9 +821,10 @@ function createStoredEntry(text, meta = {}) {
   const journalDate = meta.journalDate || now;
   const analysis = scoreEmotion(text);
   const feedback = buildFeedback(analysis, text);
+  const id = globalThis.crypto?.randomUUID?.() || `entry-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
   return {
-    id: crypto.randomUUID(),
+    id,
     createdAt: meta.createdAt || now,
     journalDate,
     displayDate: meta.displayDate || formatDateLabel(journalDate),
@@ -814,12 +841,20 @@ function getSeededDemoEntries() {
 }
 
 function seedDemoEntriesIfNeeded() {
-  const hasSeeded = localStorage.getItem(DEMO_SEED_KEY) === "true";
-  if (hasSeeded || entries.length) return;
-  entries = getSeededDemoEntries();
+  const seededEntries = getSeededDemoEntries();
+  const missingEntries = seededEntries.filter((seedEntry) => {
+    return !entries.some((item) => item.folder === seedEntry.folder || item.text === seedEntry.text);
+  });
+
+  if (!missingEntries.length) {
+    setStoredItem(DEMO_SEED_KEY, "true");
+    return;
+  }
+
+  entries = [...missingEntries, ...entries];
   saveEntries();
-  localStorage.setItem(DEMO_SEED_KEY, "true");
-  entries.forEach((item) => trainLocalModel(item.text, item.analysis));
+  setStoredItem(DEMO_SEED_KEY, "true");
+  missingEntries.forEach((item) => trainLocalModel(item.text, item.analysis));
 }
 
 function renderThemeMenu() {
@@ -1633,7 +1668,7 @@ els.clearAllBtn.addEventListener("click", () => {
   const ok = confirm("Clear all saved entries from this browser?");
   if (!ok) return;
   entries = [];
-  localStorage.removeItem(STORAGE_KEY);
+  removeStoredItem(STORAGE_KEY);
   selectedFolder = "all";
   saveSelectedFolder();
   modelState = {
